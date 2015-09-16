@@ -1,17 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
-int main(int arc, char **argv)
+int main(int argc, char **argv)
 {
+  pid_t pid;
   int status;
   
-  while(--argc > 1 && !fork());
+  while(--argc > 1 && !(pid = fork()));
   
   int val = atoi(argv[argc]);
   sleep(val);
   
   printf("%d\n", val);
-  wait(&status);
+  waitpid(pid, &status, 0);
   return 0;
 }
