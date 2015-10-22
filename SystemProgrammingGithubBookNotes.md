@@ -514,3 +514,53 @@ pthread_join(id, &result);
 In the above example, `result` will be `null` because the busy function returned `null`.
 We need to pass the address-of result because `pthread_join` will be writing into the contents of our pointer.
 
+# Difference between `exit()` and `pthread_exit()`
+`exit()` terminates the process, all threads are stopped.
+`pthread_exit()` terminates the thread only.
+
+Calling `pthread_exit` in the the `main` thread is a common way for simple programs to ensure that all threads finish. For example, in the following program, the  `myfunc` threads will probably not have time to get started.
+```C
+int main() {
+  pthread_t tid1, tid2;
+  pthread_create(&tid1, NULL, myfunc, "Jabberwocky");
+  pthread_create(&tid2, NULL, myfunc, "Vorpel");
+  exit(42); //or return 42; terminates the process
+
+  // No code is run after exit
+}
+```
+The next two programs will wait for the new threads to finish-
+```C
+int main() {
+  pthread_t tid1, tid2;
+  pthread_create(&tid1, NULL, myfunc, "Jabberwocky");
+  pthread_create(&tid2, NULL, myfunc, "Vorpel");
+  pthread_exit(NULL); 
+
+  // No code is run after pthread_exit
+  // However process will continue to exist until both threads have finished
+}
+```
+Alternatively, we join on each thread (i.e. wait for it to finish) before we return from main (or call exit).
+```C
+int main() {
+  pthread_t tid1, tid2;
+  pthread_create(&tid1, NULL, myfunc, "Jabberwocky");
+  pthread_create(&tid2, NULL, myfunc, "Vorpel");
+  // wait for both threads to finish :
+  void* result;
+  pthread_join(tid1, &result);
+  pthread_join(tid2, &result); 
+  return 42;
+}
+```
+Note the pthread_exit version creates thread zombies, however this is not a long-running processes, so we don't care.
+
+# [difference between `pthread_exit()` and `pthread_join()` and `pthread_detach()`](http://stackoverflow.com/questions/22427007/difference-between-pthread-exit-pthread-join-and-pthread-detach)
+`pthread_exit()` is called from the thread itself to terminate its execution (and return a result) early.
+
+`pthread_join()` is called from another thread (usually the thread that created it) to wait for a thread to terminate and obtain its return value. It can be called before or after the thread you're waiting for calls pthread_exit. If before, it will wait for the exit to occur. If after, it simply obtains the return value and releases the pthread_t resources.
+
+`pthread_detach()` can be called from either the thread itself or another thread, and indicates that you don't want the thread's return value or the ability to wait for it to finish. This is useful because otherwise, until you call pthread_join, the pthread_t value remains valid and consumes resources - at the very least, resources to store the return value and tying up one possible value of pthread_t. If you're using pthread_detach, normally you call it from either the new thread or the creating thread as soon as the new thread is created (right after pthread_create).
+
+
