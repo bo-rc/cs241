@@ -584,6 +584,7 @@ Solution 1: *flush* **TLB** via software or hardware.
  * **TLB** misses cost
 
 Solution 2: **address space identifier (ASID)** as if there is a **PID**
+
 ![asid](https://cloud.githubusercontent.com/assets/14265605/10320629/1271b99e-6c3a-11e5-875e-a0294a421e37.png)
 
 * which enables *sharing*:
