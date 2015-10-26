@@ -1101,7 +1101,7 @@ in the heap or otherwise some locale that is globally accessible.
 * Use the manual pages.
 
 # [Chap 28](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf): Locks
-We want ***Atomic Processing***. Due to interrupts, we couldn't.
+We want ***Atomic Processing***. But due to interrupts, we couldn't.
 * Use ***lock***
 
 ## Basic Idea
