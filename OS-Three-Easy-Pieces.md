@@ -1233,7 +1233,7 @@ void lock(lock_t *lock) {
 }
 ````
 
-### Hardware (atomic) Primitive 3: **load-linked** and **store-conditional** (MIPS, PowerPC, ARM)
+### Hardware (atomic) primitive 3: **load-linked** and **store-conditional** (MIPS, PowerPC, ARM)
 
 ```c
 // load-linked and store-conditional instructions defined by C snippet code
