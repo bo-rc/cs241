@@ -22,7 +22,33 @@
 ## 2.5 File I/O Model
 ## 2.6 Programs
 ## 2.7 Processes
+Each process has an environment list, which is a set of environment variables that are
+maintained within the user-space memory of the process.
+
+Environment variables are created with the `export` command in most shells (or
+the `setenv` command in the C shell), as in the following example:
+```bash
+export MYVAR='Hello world'
+```
+
+### Resource limits
+Using the `setrlimit()` system call
+
 ## 2.8 Memory Mappings
+The `mmap()` system call creates a new memory mapping in the calling process’s virtual
+address space.
+
+The memory in one process’s mapping may be shared with mappings in other pro-
+cesses.
+* *private mapping*: modifications to the contents of the mapping are not visible to other processes and
+are not carried through to the underlying file.
+* *shared mapping*: visible and carried through
+
+
+
+
+
+
 ## 2.9 Static and Shared Libraries
 ## 2.10 Interprocess Communication and Synchronization 
 ## 2.11 Signals
