@@ -44,14 +44,28 @@ cesses.
 are not carried through to the underlying file.
 * *shared mapping*: visible and carried through
 
-
-
-
-
-
 ## 2.9 Static and Shared Libraries
+
 ## 2.10 Interprocess Communication and Synchronization 
+**IPC** includes:
+* *signals*: to indicate that an event has occurred.
+* *pipes* and *FIFO*: to transfer data between processes.
+* *sockets*: to transfer data from one process to another, either
+on the same host computer or on different hosts connected by a network.
+* *file locking*: allows a process to lock regions of a file in order to prevent
+other processes from reading or updating the file contents
+* *message queues*: to exchange messages (packets of data) between
+processes.
+* *semaphores*: to synchronize the actions of processes.
+* *shared memory*: allows two or more processes to share a piece of memory.
+When one process changes the contents of the shared memory, all of the other
+processes can immediately see the changes.
+
 ## 2.11 Signals
+
+
+
+
 ## 2.12 Threads
 ## 2.13 Process Groups and Shell Job Control
 ## 2.14 Sessions, Controlling Terminals, and Controlling Processes
