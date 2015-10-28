@@ -121,6 +121,25 @@ data structures in a form that looks like files and directories on a file system
 ## 2.20 Summary
 
 # Chapter 3: System Programming Concepts
+Whenever we make a system call or call a library function, we should always
+check the return status of the call in order to determine if it was successful.
+
+## 3.1 System Calls
+A *system call* is a controlled entry point into the kernel, allowing a process to
+request that the kernel perform some action on the process’s behalf.
+* via the system call application programming interface (API).
+
+System calls have a small but appreciable overhead:
+![systemcall](https://cloud.githubusercontent.com/assets/14265605/10780179/b0a76ada-7d08-11e5-953c-6da718acecaa.png)
+
+Since, from the point of view of a C program, calling the C library wrapper func-
+tion is synonymous with invoking the corresponding system call service routine, in
+the remainder of this book, we use wording such as “invoking the system call `xyz()`”
+to mean “calling the wrapper function that invokes the system call `xyz()`.”
+
+## 3.2 Library Functions
+
+
 
 # Chapter 4: File I/O: The Universal I/O Model
 
