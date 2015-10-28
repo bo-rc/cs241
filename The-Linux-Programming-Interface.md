@@ -284,6 +284,16 @@ int open(const char *pathname, int flags, ... /* mode_t mode */); //Returns file
 |`O_WRONLY`  | write-only|
 |`O_RDWR` |read-and-write|
 
+SUSv3 specifies that if `open()` succeeds, it is guaranteed to use the lowest-numbered
+unused file descriptor for the process and we can use this feature:
+```c
+if (close(STDIN_FILENO) == -1) /* Close file descriptor 0 */
+  errExit("close");
+  
+fd = open(pathname, O_RDONLY); // 0 is unused, open() is guaranteed to open the file using that descriptor.
+if (fd == -1)
+  errExit("open");
+```
 
 
 # Chapter 5: File I/O: Further Details
