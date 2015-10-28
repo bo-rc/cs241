@@ -255,6 +255,33 @@ descriptors:
 | `1`   | standard output   | `STDOUT_FILENO`| *stdout*   |
 | `2`   | standard error    | `STDERR_FILENO`| *stderr*   |
 
+* the POSIX standard names are defined in `<unistd.h>`.
+
+### Four system calls
+`open()`, `read()`, `write()`, `close()`
+
+## 4.2 Universality of I/O
+the same four system calls can be used to perform I/O on all types of files.
+* including devices such as terminals
+
+Universality of I/O is achieved by ensuring that each file system and device driver
+implements the same set of I/O system calls.
+
+For specific features of a file system or device: use `ioctl()` system call.
+
+## 4.3 Opening a file: `open()`
+The `open()` system call either opens an existing file or creates and opens a new file.
+```c
+#include <sys/stat.h>
+#include <fcntl.h>
+int open(const char *pathname, int flags, ... /* mode_t mode */); //Returns file descriptor on success, or –1 o
+```
+valid `flag`s:
+|Access mode |Description|
+|:----------:|:---------:|
+|`O_RDONLY`  |  read-only|
+|`O_WRONLY`  | write-only|
+|`O_RDWR` |read-and-write|
 
 
 
