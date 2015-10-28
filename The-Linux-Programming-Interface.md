@@ -241,11 +241,22 @@ Most of the standard system data types have names ending in `_t`. Many of them a
 declared in the header file `<sys/types.h>`, although a few are defined in other
 header files.
 
-
-
-
-
 # Chapter 4: File I/O: The Universal I/O Model
+## 4.1 Overview
+All system calls for performing I/O refer to open files using a *file descriptor*, a (usually
+small) nonnegative integer.
+
+By convention, most programs expect to be able to use the three standard file
+descriptors:
+
+| File descriptor | Purpose | POSIX name | `stdio` stream |
+|:---------------:|:-------:|:----------:|:--------------:|
+| `0`   |    standard input | `STDIN_FILENO` | *stdin*    |
+| `1`   | standard output   | `STDOUT_FILENO`| *stdout*   |
+| `2`   | standard error    | `STDERR_FILENO`| *stderr*   |
+
+
+
 
 # Chapter 5: File I/O: Further Details
 
