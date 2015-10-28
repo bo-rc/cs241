@@ -129,7 +129,7 @@ A *system call* is a controlled entry point into the kernel, allowing a process 
 request that the kernel perform some action on the process’s behalf.
 * via the system call application programming interface (API).
 
-System calls have a small but appreciable overhead:
+System calls have a significant overhead (by comparison with a user-space function calls):
 ![systemcall](https://cloud.githubusercontent.com/assets/14265605/10780179/b0a76ada-7d08-11e5-953c-6da718acecaa.png)
 
 Since, from the point of view of a C program, calling the C library wrapper func-
