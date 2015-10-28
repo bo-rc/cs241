@@ -160,6 +160,77 @@ include [uClibc](http://www.uclibc.org/) and [diet libc](http://www.fefe.de/diet
 const char *gnu_get_libc_version(void); // Returns pointer to null-terminated, statically allocated string containing GNU C library version number
 ```
 ## 3.4 Handling Errors from System Calls and Library Functions
+Always check return values of system calls.
+* A few system calls never fail. For example, `getpid()` always successfully returns
+the ID of a process, and `_exit()` always terminates a process. It is not necessary
+to check the return values from such system calls.
+
+### Handling system call errors
+
+The manual page for each system call documents the possible return values of the
+call, showing which value(s) indicate an error.
+```c
+fd = open(pathname, flags, mode); /* system call to open a file */
+if (fd == -1) {
+/* Code to handle the error */
+}
+
+if (close(fd) == -1) {
+/* Code to handle the error */
+}
+```
+When a system call fails, it sets the global integer variable errno to a positive value
+that identifies the specific error.
+* `#include <errno.h>`
+```c
+cnt = read(fd, buf, numbytes);
+if (cnt == -1) {
+  if (errno == EINTR)
+    fprintf(stderr, "read was interrupted by a signal\n");
+  else {
+    /* Some other error occurred */
+  }
+}
+```
+
+Successful system calls and library functions never reset errno to 0, so this variable
+may have a nonzero value as a consequence of an error from a previous call.
+* SUSv3 permits a successful function call to set `errno` to a nonzero value
+ * few functions do this
+* when checking for an error, always first check if the function return value indicates an error, and only then
+examine `errno` to determine the cause of the error.
+
+A few system calls (e.g., `getpriority()`) can legitimately return –1 on success. To
+determine whether an error occurs in such calls, we set `errno` to 0 before the call,
+and then check it afterward.
+
+A common course of action after a failed system call is to print an error message
+based on the errno value. The `perror()` and `strerror()` library functions are provided
+for this purpose:
+```c
+#include <stdio.h>
+void perror(const char *msg);
+```
+e.g.
+```c
+fd = open(pathname, flags, mode);
+if (fd == -1) {
+  perror("open");
+  exit(EXIT_FAILURE);
+}
+```
+```c
+#include <string.h>
+char *strerror(int errnum); // Returns pointer to error string corresponding to errnum
+// If errnum specifies an unrecognized error number, 
+// strerror() returns a string of the form Unknown error nnn, or NULL
+```
+
+`perror()` and `strerror()` functions are locale-sensitive.
+
+### Handling errors from library functions
+Library functions could use `perror()`, `strerror` and `errno` or not.
+* check `man` page.
 
 
 
