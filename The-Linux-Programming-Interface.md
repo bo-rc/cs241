@@ -138,6 +138,23 @@ the remainder of this book, we use wording such as “invoking the system call `
 to mean “calling the wrapper function that invokes the system call `xyz()`.”
 
 ## 3.2 Library Functions
+functions that constitutes the standard C library.
+
+Many library functions don’t make any use of system calls (e.g., the string-
+manipulation functions). On the other hand, some library functions are layered on
+top of system calls. For example, the `fopen()` library function uses the `open()` system
+call to actually open a file. Often, library functions are designed to provide a more
+caller-friendly interface than the underlying system call. For example, the `printf()`
+function provides output formatting and data buffering, whereas the `write()` system
+call just outputs a block of bytes. Similarly, the `malloc()` and `free()` functions perform
+various bookkeeping tasks that make them a much easier way to allocate and free
+memory than the underlying `brk()` system call.
+
+## 3.3 The Standard C Library; The GNU C Library ( `glibc` )
+Various other C libraries are available for Linux, including libraries with
+smaller memory requirements for use in embedded device applications. Examples
+include [uClibc](http://www.uclibc.org/) and [diet libc](http://www.fefe.de/dietlibc/).
+
 
 
 
