@@ -62,18 +62,62 @@ When one process changes the contents of the shared memory, all of the other
 processes can immediately see the changes.
 
 ## 2.11 Signals
+Signals are often described as “software interrupts.”
 
+Each signal type is identified by a different integer, defined with symbolic names of
+the form `SIGxxxx`.
 
+Within the shell, the `kill` command can be used to send a signal to a process. The
+`kill()` system call provides the same facility within programs.
 
+In the interval between the time a signal is generated and the time it is delivered, a
+signal is said to be *pending* for a process. Normally, a pending signal is delivered as
+soon as the receiving process is next scheduled to run, or immediately if the process is already running.
+* it is also possible to block a signal by adding it to
+the process’s signal mask. If a signal is generated while it is blocked, it remains
+pending until it is later unblocked.
 
 ## 2.12 Threads
+One way of envisaging threads is as a set of processes that share the same
+virtual memory, as well as a range of other attributes. Each thread is executing the
+same program code and shares the same data area and heap. However, each thread
+has it own stack containing local variables and function call linkage information.
+
+Threads can communicate with each other via the global variables that they share.
+* with help from *condition variables* and *mutexes*.
+* Threads can also communicate with one another using the IPC and synchronization mechanisms.
+
+The primary advantages of using threads are that they make it easy to share
+data (via global variables) between cooperating threads and that some algorithms
+transpose more naturally to a multithreaded implementation than to a multiprocess
+implementation. Furthermore, a multithreaded application can transparently take
+advantage of the possibilities for parallel processing on multiprocessor hardware.
+
 ## 2.13 Process Groups and Shell Job Control
+A *session* is a collection of process groups ( jobs). All of the processes in a session
+have the same *session identifier*. A *session leader* is the process that created the session, and its process ID becomes the session ID.
+
 ## 2.14 Sessions, Controlling Terminals, and Controlling Processes
+Sessions are used mainly by job-control shells. 
+
+Job-control shells provide commands for listing all jobs, sending signals to jobs,
+and moving jobs between the foreground and background.
+
 ## 2.15 Pseudoterminals
+
+
 ## 2.16 Date and Time
 ## 2.17 Client-Server Architecture
 ## 2.18 Realtime
+Traditional UNIX implementations are not realtime
+operating systems, although realtime variants have been devised. Realtime variants
+of Linux have also been created, and recent Linux kernels are moving toward full
+native support for realtime applications.
+
 ## 2.19 The /proc File System
+The `/proc` file system is a virtual file system that provides an interface to kernel
+data structures in a form that looks like files and directories on a file system.
+
 ## 2.20 Summary
 
 # Chapter 3: System Programming Concepts
