@@ -192,6 +192,8 @@ if (cnt == -1) {
   }
 }
 ```
+POSIX: `errno` is defined in threaded programs
+as a macro that expands into a function call that returns a modifiable lvalue.
 
 Successful system calls and library functions never reset errno to 0, so this variable
 may have a nonzero value as a consequence of an error from a previous call.
@@ -231,6 +233,13 @@ char *strerror(int errnum); // Returns pointer to error string corresponding to 
 ### Handling errors from library functions
 Library functions could use `perror()`, `strerror` and `errno` or not.
 * check `man` page.
+
+## 3.5 Notes on the example programs in this book
+
+## 3.6 Portability Issues
+Most of the standard system data types have names ending in `_t`. Many of them are
+declared in the header file `<sys/types.h>`, although a few are defined in other
+header files.
 
 
 
