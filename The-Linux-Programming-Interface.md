@@ -276,7 +276,8 @@ The `open()` system call either opens an existing file or creates and opens a ne
 #include <fcntl.h>
 int open(const char *pathname, int flags, ... /* mode_t mode */); //Returns file descriptor on success, or –1 o
 ```
-valid `flag`s:
+* valid `flag`s:
+
 |Access mode |Description|
 |:----------:|:---------:|
 |`O_RDONLY`  |  read-only|
