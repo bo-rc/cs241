@@ -155,6 +155,13 @@ Various other C libraries are available for Linux, including libraries with
 smaller memory requirements for use in embedded device applications. Examples
 include [uClibc](http://www.uclibc.org/) and [diet libc](http://www.fefe.de/dietlibc/).
 
+```c
+#include <gnu/libc-version.h>
+const char *gnu_get_libc_version(void); // Returns pointer to null-terminated, statically allocated string containing GNU C library version number
+```
+## 3.4 Handling Errors from System Calls and Library Functions
+
+
 
 
 
