@@ -294,7 +294,92 @@ fd = open(pathname, O_RDONLY); // 0 is unused, open() is guaranteed to open the 
 if (fd == -1)
   errExit("open");
 ```
+### The `creat()` system call
+Obsolete because modern UNIX has `fd = open(pathname, O_WRONLY | O_CREAT | O_TRUNC, mode);`
 
+## 4.4 Reading from a file: `read()`
+```c
+#include <unistd.h>
+ssize_t read(int fd, void *buffer, size_t count); // Returns number of bytes read, 0 on EOF, or –1 on error
+```
+The `buffer` must be at least `count` bytes long.
+* System calls don’t allocate memory for buffers that are used to return information
+to the caller. Instead, we **must** pass a pointer to a previously allocated
+memory buffer of the correct size. This contrasts with several library functions
+that **do** allocate memory buffers in order to return information to the caller.
+
+`read()` reads any sequence of bytes from a file.
+* won't stop at a `whitespace` or even `\0`
+ * `printf()` requries a terminating `\0` to properly print strings. If using `read()`, we need to explicitly do this:
+```c
+char buffer[MAX_READ + 1];
+ssize_t numRead;
+
+numRead = read(STDIN_FILENO, buffer, MAX_READ);
+if (numRead == -1)
+  errExit("read");
+  
+buffer[numRead] = '\0';
+printf("The input data was: %s\n", buffer);
+```
+
+## 4.5 Wring to a file: `write()`
+```c
+#include <unistd.h>
+ssize_t write(int fd, void *buffer, size_t count); // Returns number of bytes written, or –1 on error
+```
+The kernel performs
+buffering of disk I/O in order to reduce disk activity and expedite `write()` calls.
+
+## 4.6 Closing a file: `close()`
+```c
+#include <unistd.h>
+int close(int fd); // Returns 0 on success, or –1 on error
+```
+File descriptors are resources.
+* should be released when done for long-lived programs.
+
+Check return values of `close()` for diagnose purposes.
+* closed twice?
+* not open? etc.
+
+## 4.7 Changing the file offset: `lseek()`
+*file offset*: the location in the file at which the next `read()` or `write()` will commence.
+* The first byte of the file is at offset 0.
+
+```c
+#include <unistd.h>
+off_t lseek(int fd, off_t offset, int whence); // Returns new file offset if successful, or –1 on error
+```
+
+![whence](https://cloud.githubusercontent.com/assets/14265605/10826013/aa55c4d2-7e35-11e5-8726-fffea77aeffd.png)
+
+The following
+call retrieves the current location of the file offset without changing it:
+`curr = lseek(fd, 0, SEEK_CUR);`
+
+e.g.
+```c
+lseek(fd, 0, SEEK_SET); /* Start of file */
+lseek(fd, 0, SEEK_END); /* Next byte after the end of the file */
+lseek(fd, -1, SEEK_END); /* Last byte of file */
+lseek(fd, -10, SEEK_CUR); /* Ten bytes prior to current location */
+lseek(fd, 10000, SEEK_END); /* 10001 bytes past last byte of file */
+```
+Calling `lseek()` simply adjusts the kernel’s record of the file offset associated with a
+file descriptor. 
+* It does not cause any physical device access.
+### file hole
+Writing data at a position
+beyond the previous end of the file creates a hole in the file. Reads from a file hole
+return bytes containing zeros.
+
+## 4.8 Operations Outside the Universal I/O Model: `ioctl()`
+
+## 4.9 Summary
+For each open file, the kernel maintains a file offset, which determines the
+location at which the next read or write will occur. The file offset is implicitly
+updated by reads and writes.
 
 # Chapter 5: File I/O: Further Details
 
