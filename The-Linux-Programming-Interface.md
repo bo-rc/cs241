@@ -442,6 +442,20 @@ updated by reads and writes.
 # Chapter 52: POSIX Message Queues 
 # Chapter 53: POSIX Semaphores
 # Chapter 54: POSIX Shared Memory
+## Round_up and Round_down tricks
+
+```c
+// for integers
+#define ROUND_UP(N, S) ((((N) + (S) - 1) / (S)) * (S))
+#define ROUND_DOWN(N,S) ((N / S) * S)
+
+// for power of 2, e.g. page alignment
+#define PAGE_ROUND_DOWN(x) (((ULONG_PTR)(x)) & (~(PAGE_SIZE-1)))
+#define PAGE_ROUND_UP(x) ( (((ULONG_PTR)(x)) + PAGE_SIZE-1)  & (~(PAGE_SIZE-1)) )
+
+#define ROUND_UP_TO_A_PAGE(s) ((s & (PAGESIZE - 1)) ? (s & ~(PAGESIZE - 1)) + PAGESIZE : s)
+```
+
 # Chapter 55: File Locking
 # Chapter 56: Sockets: Introduction
 # Chapter 57: Sockets: UNIX Domain
