@@ -1041,6 +1041,9 @@ int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex); // puts the
 int pthread_cond_signal(pthread_cond_t *cond);
 ```
 * requires a lock to be held when calling the above routines (see: [Condition Variables](https://github.com/bo-rc/cs241/wiki/Three-Easy-Pieces-Of-Operating-System-Book-Notes#parent-waiting-for-child-use-a-condition-variable))
+* To use a condition variable, one has to in addition have a lock that is
+associated with this condition. When calling either of the above routines,
+this lock should be held.
 
 e.g.
 ```c
