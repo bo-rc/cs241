@@ -1687,9 +1687,11 @@ void thr_join() { // wait-signal pair: the wait side
         Pthread_cond_wait(&c, &m); // assumes a lock is held before being called to prevent race condition: the thread tries to be both signal and wait.
         /* the way it works:
          * calling Pthread_cond_wait -> system put this thread to sleep and release the lock m so that
-         * the signaling thread can modify the signal flag. then, after a signal arrives and awakes this thread,
-         * Pthread_cond_wait starts to return and re-lock the lock m so that 
-         * Pthread_mutex_unlock(&m) works as a pair with Pthread_mutex_lock(&m)
+         * the signaling thread can aquire the same lock m and 
+         * modify the signal flag. 
+         * then, after a signal arrives and awakes this thread,
+         * Pthread_cond_wait starts to return and re-lock the same lock m so that 
+         * Pthread_mutex_unlock(&m) works as a pair with Pthread_mutex_lock(&m) to unlock the same lock m.
          *
          * the whole purpose is to avoid race condition */
     Pthread_mutex_unlock(&m);
