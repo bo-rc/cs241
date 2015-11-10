@@ -1040,7 +1040,7 @@ it can continue.
 int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex); // puts the calling thread to sleep, and thus waits for some other thread to signal it.
 int pthread_cond_signal(pthread_cond_t *cond);
 ```
-* requires a lock to be held when calling the above routines (see: [Condition Variables](https://github.com/bo-rc/cs241/wiki/Three-Easy-Pieces-Of-Operating-System-Book-Notes#parent-waiting-for-child-use-a-condition-variable))
+* requires a lock to be held when calling the above routines (see: [Condition Variables](https://github.com/bo-rc/cs241/blob/master/OS-Three-Easy-Pieces.md#parent-waiting-for-child-use-a-condition-variable))
 * To use a condition variable, one has to in addition have a lock that is
 associated with this condition. When calling either of the above routines,
 this lock should be held.
