@@ -1056,7 +1056,19 @@ pthread_cond_t cond = PTHREAD_COND_INITIALIZER;
 // the calling thread:
 Pthread_mutex_lock(&lock);
 while (ready == 0) // use while other than if to recheck: safer
-    Pthread_cond_wait(&cond, &lock); // needs arg2, the lock. releases the lock when putting the caller to sleep. Not wasting CPU cycles.
+    Pthread_cond_wait(&cond, &lock); // puting this thread to sleep: Not wasting CPU cycles.
+        /* The same lock used also by the signaling thread must be held before being called.
+         * The way it works:
+         * calling Pthread_cond_wait -> system put this thread to sleep and release the lock m so that
+         * the signaling thread can aquire the same lock m and 
+         * modify the signal flag. 
+         * then, after a signal arrives and awakes this thread,
+         * Pthread_cond_wait starts to return and re-lock the same lock m so that 
+         * Pthread_mutex_unlock(&m) works as a pair with Pthread_mutex_lock(&m) to unlock the same lock m.
+         *
+         * the whole purpose is to avoid race condition 
+         * w/o the lock m, putting this thread to sleep and signaling this thread to awake could happen at the same time: 
+         * this would be a race condition because the relative timing would change the result of the code. */
 Pthread_mutex_unlock(&lock);
 
 // some other thread: the code which wakes up the above thread:
