@@ -1035,6 +1035,7 @@ Condition
 variables are useful when some kind of signaling must take place
 between threads, if one thread is waiting for another to do something before
 it can continue.
+* both waiting and signaling threads use a same lock to prevent race condition
 
 ```c
 int pthread_cond_wait(pthread_cond_t *cond, pthread_mutex_t *mutex); // puts the calling thread to sleep, and thus waits for some other thread to signal it.
