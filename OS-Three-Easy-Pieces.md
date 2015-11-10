@@ -1693,7 +1693,9 @@ void thr_join() { // wait-signal pair: the wait side
          * Pthread_cond_wait starts to return and re-lock the same lock m so that 
          * Pthread_mutex_unlock(&m) works as a pair with Pthread_mutex_lock(&m) to unlock the same lock m.
          *
-         * the whole purpose is to avoid race condition */
+         * the whole purpose is to avoid race condition 
+         * w/o the lock m, putting this thread to sleep and signaling this thread to awake could happen at the same time: 
+         * this would be a race condition because the relative timing would change the result of the code. */
     Pthread_mutex_unlock(&m);
 }
 
