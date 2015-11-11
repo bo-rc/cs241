@@ -1560,6 +1560,7 @@ int List_lookup(list_t *L, int key) {
     }
     pthread_mutex_unlock(&L->lock);
     return rv;
+}
 ```
 
 A (conceptually scalable method): *hand-over-hand locking* (a.k.a. *lock coupling*): 
