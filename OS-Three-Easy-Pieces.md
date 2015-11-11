@@ -2025,15 +2025,35 @@ void Zem_post(Zem_t *s) {
 ## Non-Deadlock Bugs
 Two major types: **atomicity violation** bugs and **order violation** bugs
 
-### Atomicity violation
+### Atomicity violation: a code region is intended to be atomic, but the atomicity is not enforced during execution.
 In `MySQL`:
 ```c
 // Thread 1::
+if (thd->proc_info) {
+// ... // what if interrupt happens here and thread 2 runs
+fputs(thd->proc_info, ...); // then dereference a NULL would crash the program
+// ...
+}
+
+*Solution*: add a lock
+```c
+pthread_mutex_t proc_info_lock = PTHREAD_MUTEX_INITIALIZER;
+
+// Thread 1::
+pthread_mutex_lock(&proc_info_lock);
 if (thd->proc_info) {
 // ...
 fputs(thd->proc_info, ...);
 // ...
 }
+pthread_mutex_unlock(&proc_info_lock);
+
+// Thread 2::
+pthread_mutex_lock(&proc_info_lock);
+thd->proc_info = NULL;
+pthread_mutex_unlock(&proc_info_lock);
+```
+
 
 // Thread 2::
 thd->proc_info = NULL;
