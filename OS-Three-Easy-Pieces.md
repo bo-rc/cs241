@@ -2019,10 +2019,25 @@ void Zem_post(Zem_t *s) {
 
 # [Chap 32](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf): Common Concurrency Problems 
 
-## Types of bugs: based on studies of real applications
+## Types of bugs: based on studies (Lu08) of real applications
 ![concurrency_bugs](https://cloud.githubusercontent.com/assets/14265605/11102371/b57fe06c-8881-11e5-9e04-56a27e3b0f5f.png)
 
+## Non-Deadlock Bugs
+Two major types: **atomicity violation** bugs and **order violation** bugs
 
+### Atomicity violation
+In `MySQL`:
+```c
+// Thread 1::
+if (thd->proc_info) {
+// ...
+fputs(thd->proc_info, ...);
+// ...
+}
+
+// Thread 2::
+thd->proc_info = NULL;
+```
 
 
 
