@@ -2079,8 +2079,8 @@ void mMain(...) {
 *Solution*: using condition variables is an easy and robust way to add this style of synchronization into modern code bases.
 ```c
 pthread_mutex_t mtLock = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t mtCond = PTHREAD_COND_INITIALIZER;
-int mtInit = 0;
+pthread_cond_t mtCond = PTHREAD_COND_INITIALIZER; // condition variable
+int mtInit = 0; // state variable
 
 // Thread 1::
 void init() {
