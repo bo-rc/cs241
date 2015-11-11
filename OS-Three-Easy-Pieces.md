@@ -1464,7 +1464,7 @@ Simple solution: counter with locks.
 * One *single* global logical counter
 * *each* CPU maintains a *local* physical counters
 * local counter updates the global one when the local reaches a *threshold*.
- * sloppiness: the global logical counter *lags* by ~ the number of CPUs * threashold.
+ * sloppiness: the global logical counter *lags* by `~ the number of CPUs * threashold`.
 
 ### implementation
 ```c
