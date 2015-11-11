@@ -2108,6 +2108,8 @@ void mMain(...) {
  // ...
 }
 ```
-
+Note that we could likely use `mThread` as the state variable itself, but do not do so
+for the sake of simplicity here. When ordering matters between threads,
+condition variables (or semaphores) can come to the rescue.
 
 
