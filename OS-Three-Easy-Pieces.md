@@ -2112,4 +2112,11 @@ Note that we could likely use `mThread` as the state variable itself, but do not
 for the sake of simplicity here. When ordering matters between threads,
 condition variables (or semaphores) can come to the rescue.
 
+Non-Deadlock Bugs: 97%
+
+## Deadlock Bugs
+![deadlock](https://cloud.githubusercontent.com/assets/14265605/11104771/59ca05d6-8890-11e5-80f5-17f5046cc822.png)
+
+
+
 
