@@ -1746,8 +1746,8 @@ should not wake other consumers, only producers, and vice-versa.
 * producer threads wait on the condition **empty**, and
 signals **fill**. Conversely, consumer threads wait on **fill** and signal **empty**.
 
-*Using `while` for conditions is always correct.
-* also hands the case where spurious wakeups occur.
+Using `while` for conditions is always correct.
+* also handles the case where spurious wakeups occur.
  * because it will re-check in `while`.
 
 ### Solution to producer/consumer problem
