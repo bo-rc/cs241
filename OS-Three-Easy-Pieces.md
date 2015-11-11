@@ -1318,6 +1318,8 @@ void unlock(lock_t *lock) {
 * has good fairness
  * thread acquire the lock according to their turn ticket value. (queued)
 
+**Summary**: we need some hardware primitives (like above) to realize locks.
+
 ## but, how to avoid spinning?
 > ... thread 1 spins and spins until a timer interrupt goes off, thread 0 runs again, which releases the lock.
 
