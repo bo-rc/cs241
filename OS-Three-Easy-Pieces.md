@@ -2035,6 +2035,10 @@ fputs(thd->proc_info, ...); // then dereference a NULL would crash the program
 // ...
 }
 
+// Thread 2::
+thd->proc_info = NULL;
+```
+
 *Solution*: add a lock
 ```c
 pthread_mutex_t proc_info_lock = PTHREAD_MUTEX_INITIALIZER;
@@ -2054,11 +2058,56 @@ thd->proc_info = NULL;
 pthread_mutex_unlock(&proc_info_lock);
 ```
 
+### Order-Violation Bugs: `A` should always be executed before `B`, but the order is not enforced during execution.
+
+```c
+// Thread 1::
+void init() {
+ // ...
+ mThread = PR_CreateThread(mMain, ...);
+ // ...
+}
 
 // Thread 2::
-thd->proc_info = NULL;
+void mMain(...) {
+ // ...
+ mState = mThread->State;
+ // ...
+}
 ```
 
+*Solution*: using condition variables is an easy and robust way to add this style of synchronization into modern code bases.
+```c
+pthread_mutex_t mtLock = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t mtCond = PTHREAD_COND_INITIALIZER;
+int mtInit = 0;
+
+// Thread 1::
+void init() {
+ // ...
+ mThread = PR_CreateThread(mMain, ...);
+
+ // signal that the thread has been created...
+ pthread_mutex_lock(&mtLock);
+ mtInit = 1;
+ pthread_cond_signal(&mtCond);
+ pthread_mutex_unlock(&mtLock);
+ // ...
+}
+
+// Thread 2::
+void mMain(...) {
+ // ...
+ // wait for the thread to be initialized...
+ pthread_mutex_lock(&mtLock);
+ while (mtInit == 0)
+  pthread_cond_wait(&mtCond, &mtLock);
+ pthread_mutex_unlock(&mtLock);
+
+ mState = mThread->State;
+ // ...
+}
+```
 
 
 
