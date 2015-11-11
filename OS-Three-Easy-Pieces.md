@@ -2019,4 +2019,11 @@ void Zem_post(Zem_t *s) {
 
 # [Chap 32](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf): Common Concurrency Problems 
 
+## Types of bugs: based on studies of real applications
+![concurrency_bugs](https://cloud.githubusercontent.com/assets/14265605/11102371/b57fe06c-8881-11e5-9e04-56a27e3b0f5f.png)
+
+
+
+
+
 
