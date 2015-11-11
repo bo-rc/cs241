@@ -1460,7 +1460,7 @@ by threads makes the structure ***thread safe***.
 Simple solution: counter with locks.
 * not scalable
 
-***Sloppy Counter***: 
+***Sloppy Counter***: keep local counters for each CPU and update global counter less frenqently to improve scaling.
 * One *single* global logical counter
 * *each* CPU maintains a *local* physical counters
 * local counter updates the global one when the local reaches a *threshold*.
