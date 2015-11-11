@@ -2016,3 +2016,7 @@ void Zem_post(Zem_t *s) {
     Mutex_unlock(&s->lock);
 }
 ```
+
+# [Chap 32](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-bugs.pdf): Common Concurrency Problems 
+
+
