@@ -1597,7 +1597,7 @@ void Queue_Init(queue_t * q)
 {
     node_t *tmp = malloc(sizeof(node_t)); // assumes malloc is thread-safe
     tmp->next = NULL;
-    q->head = q->tail = tmp;
+    q->head = q->tail = tmp; // this is the dummy node
     pthread_mutex_init(&q->headLock, NULL);
     pthread_mutex_init(&q->tailLock, NULL);
 }
