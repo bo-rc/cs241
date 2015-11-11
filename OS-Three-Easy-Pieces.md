@@ -1724,7 +1724,7 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 ```
-> Always hold the lock while signaling or wait, and you will always be in good shape.
+> Always hold the lock while signaling or waiting, and you will always be in good shape.
 
 ## The Producer/Consumer (Bounded Buffer) Problem
 This problem posed by Dijkstra leads to the invention of the generalized *semaphore*.
