@@ -2133,7 +2133,48 @@ requested by the next thread in the chain.
 
 Solution is to prevent one of the four conditions from arising.
 
-### Handling Deadlocks
+### Handling Deadlocks (Prevention)
 
+***Circular Wait***: provide **total ordering**
+* For example, if there are only
+two locks in the system (L1 and L2), you can prevent deadlock by always
+acquiring L1 before L2. Such strict ordering ensures that no cyclical wait
+arises; hence, no deadlock.
 
+When total ordering is hard to achieve: at least enforce a **partial ordering**.
+
+A *Tip* example:
+In some cases, a function must grab two (or more) locks; thus, we know
+we must be careful or deadlock could arise. Imagine a function that is
+called as follows: `do_something(mutex t *m1, mutex t *m2)`. If
+the code always grabs `m1` before `m2` (or always `m2` before `m1`), it could
+deadlock, because one thread could call `do_something(L1, L2)` while
+another thread could call `do_something(L2, L1)`.
+To avoid this particular issue, the clever programmer can use the address
+of each lock as a way of ordering lock acquisition. By acquiring locks in
+either high-to-low or low-to-high address order, `do_something()` can
+guarantee that it always acquires locks in the same order, regardless of
+which order they are passed in. The code would look something like this:
+```c
+if (m1 > m2) { // grab locks in high-to-low address order
+ pthread_mutex_lock(m1);
+ pthread_mutex_lock(m2);
+} else {
+ pthread_mutex_lock(m2);
+ pthread_mutex_lock(m1);
+}
+// Code assumes that m1 != m2 (it is not the same lock)
+```
+By using this simple technique, a programmer can ensure a simple and
+efficient deadlock-free implementation of multi-lock acquisition.
+
+***Hold-and-wait***: can be avoided by acquiring all locks at once, atomically.
+this could be achieved as follows:
+```c
+lock(prevention); // guard for atomicity
+lock(L1);
+lock(L2);
+// ...
+unlock(prevention); // guard for atomicity
+```
 
