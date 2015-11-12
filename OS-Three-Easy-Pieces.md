@@ -2117,6 +2117,11 @@ Non-Deadlock Bugs: 97%
 ## Deadlock Bugs
 ![deadlock](https://cloud.githubusercontent.com/assets/14265605/11104771/59ca05d6-8890-11e5-80f5-17f5046cc822.png)
 
+Due to:
+
+1. large code bases easily have circular dependency.
+2. *encapsulation* hides details so it hides potentials for deadlocks too.
+
 ### Conditions for Deadlocks
 
 Four conditions need to hold for a deadlock to occur [C+71]:
@@ -2169,7 +2174,7 @@ By using this simple technique, a programmer can ensure a simple and
 efficient deadlock-free implementation of multi-lock acquisition.
 
 ***Hold-and-wait***: can be avoided by acquiring all locks at once, atomically.
-this could be achieved as follows:
+This could be achieved as follows:
 ```c
 lock(prevention); // guard for atomicity
 lock(L1);
@@ -2178,3 +2183,4 @@ lock(L2);
 unlock(prevention); // guard for atomicity
 ```
 
+***No Preemption***: 
