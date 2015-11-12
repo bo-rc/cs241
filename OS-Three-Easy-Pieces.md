@@ -2183,4 +2183,4 @@ lock(L2);
 unlock(prevention); // guard for atomicity
 ```
 
-***No Preemption***: 
+***No Preemption***: use `trylock()`
