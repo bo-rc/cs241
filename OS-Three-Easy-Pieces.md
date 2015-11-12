@@ -2117,6 +2117,23 @@ Non-Deadlock Bugs: 97%
 ## Deadlock Bugs
 ![deadlock](https://cloud.githubusercontent.com/assets/14265605/11104771/59ca05d6-8890-11e5-80f5-17f5046cc822.png)
 
+### Conditions for Deadlocks
+
+Four conditions need to hold for a deadlock to occur [C+71]:
+* **Mutual exclusion**: Threads claimexclusive control of resources that
+they require (e.g., a thread grabs a lock).
+* **Hold-and-wait**: Threads hold resources allocated to them(e.g., locks
+that they have already acquired) while waiting for additional resources
+(e.g., locks that they wish to acquire).
+* **No preemption**: Resources (e.g., locks) cannot be forcibly removed
+from threads that are holding them.
+* **Circular wait**: There exists a circular chain of threads such that
+each thread holds one more resources (e.g., locks) that are being
+requested by the next thread in the chain.
+
+Solution is to prevent one of the four conditions from arising.
+
+### Handling Deadlocks
 
 
 
