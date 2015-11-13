@@ -2211,6 +2211,75 @@ this sequence and repeatedly failing to acquire both locks.
 the entire thing over again to decrease the odds of repeated interference
 among competing threads.
 
+Solution problems:
+* *livelock* potential as described above
+* before re-trying we need to release resources created along the path if any.
+
+***Mutual Exclusion***: avoid the need for mutual exclusion at all.
+e.g. *wait-free* data structures with hardware support:
+Suppose we have an atomic instruction:
+```c
+int CompareAndSwap(int *address, int expected, int new) {
+ if (*address == expected) {
+  *address = new;
+  return 1; // success
+ }
+ return 0; // failure
+}
+```
+so that we can atomically increment a value by a certain amount:
+```c
+void AtomicIncrement(int *value, int amount) {
+ do {
+  int old = *value;
+ } while (CompareAndSwap(value, old, old + amount) == 0);
+}
+```
+For list insertions, traditionally we have to do:
+```c
+void insert(int value) {
+ node_t *n = malloc(sizeof(node_t));
+ assert(n != NULL);
+ n->value = value;
+ lock(listlock); // begin critical section
+ n->next = head;
+ head = n;
+ unlock(listlock); // end of critical section
+}
+```
+Now we can do:
+```c
+void insert(int value) {
+ node_t *n = malloc(sizeof(node_t));
+ assert(n != NULL);
+ n->value = value;
+ do {
+  n->next = head;
+ } while (CompareAndSwap(&head, n->next, n) == 0);
+}
+```
+
+### Deadlock avoidance via scheduling
+***Avoidance***: using scheduling to guarantee no deadlock.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
