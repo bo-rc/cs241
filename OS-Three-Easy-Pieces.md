@@ -2173,6 +2173,10 @@ if (m1 > m2) { // grab locks in high-to-low address order
 By using this simple technique, a programmer can ensure a simple and
 efficient deadlock-free implementation of multi-lock acquisition.
 
+Solution problems:
+* ordering is just a convention.
+* requires knowing the implementation detail of the proper locking order.
+
 ***Hold-and-wait***: can be avoided by acquiring all locks at once, atomically.
 This could be achieved as follows:
 ```c
@@ -2183,4 +2187,30 @@ lock(L2);
 unlock(prevention); // guard for atomicity
 ```
 
+Solution problems:
+* requires to know locks' mechanism implementation details
+* decreases concurrency
+
 ***No Preemption***: use `trylock()`
+```c
+top:
+lock(L1);
+if (trylock(L2) == -1) {
+ unlock(L1);
+ goto top;
+}
+```
+
+Note that another thread could follow the same protocol but grab the
+locks in the other order (L2 then L1) and the program would still be deadlock
+free.
+* this could create a new problem: **livelock**: It is possible
+(though perhaps unlikely) that two threads could both be repeatedly attempting
+this sequence and repeatedly failing to acquire both locks.
+ * *A solution*: add a random delay before looping back and trying
+the entire thing over again to decrease the odds of repeated interference
+among competing threads.
+
+
+
+
