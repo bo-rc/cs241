@@ -2291,6 +2291,30 @@ This approach is not widely used due to the above problems.
 
 ### Detect and Recover
 
+Many database systems employ deadlock detection and recovery techniques.
+A deadlock detector runs periodically, building a resource graph
+and checking it for cycles. In the event of a cycle (deadlock), the system
+needs to be restarted. 
+
+> Don't always do it perfectly ...
+> Not everything worth doing is worth doing well - <<Soul of a New Machine>>
+
+If it happens only once a year and it is OK to reboot the machine, then you can just live with the deadlock.
+* This solutions does not apply in mission-critical systems.
+
+
+## Summary
+
+Non-deadlock bugs are easy to fix.
+
+For deadlock bugs,  The best solution
+in practice is to be careful, develop a lock acquisition order, and
+thus prevent deadlock from occurring in the first place.
+
+Locks are problematic by their very nature;
+perhaps we should seek to avoid using them unless we truly must.
+
+# [Chap 33](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf): Event-based concurrency
 
 
 
