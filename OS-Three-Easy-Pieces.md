@@ -2124,7 +2124,7 @@ Due to:
 
 ### Conditions for Deadlocks
 
-Four conditions need to hold for a deadlock to occur [C+71]:
+Four conditions need to hold at once for a deadlock to occur [C+71]:
 * **Mutual exclusion**: Threads claimexclusive control of resources that
 they require (e.g., a thread grabs a lock).
 * **Hold-and-wait**: Threads hold resources allocated to them(e.g., locks
@@ -2135,6 +2135,7 @@ from threads that are holding them.
 * **Circular wait**: There exists a circular chain of threads such that
 each thread holds one more resources (e.g., locks) that are being
 requested by the next thread in the chain.
+ * if a system has only one single lock, no deadlock can occur.
 
 Solution is to prevent one of the four conditions from arising.
 
