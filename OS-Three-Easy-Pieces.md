@@ -2268,15 +2268,19 @@ of the entire set of tasks that must be run and the locks that they
 need.
 
 e.g. for threads (T) and locks(L) like this:
+
 <img style="float: left;" src="https://cloud.githubusercontent.com/assets/14265605/11158837/7d4f69ba-8a20-11e5-9152-96eacdce5a22.png">
 
 The scheduler should do:
+
 <img style="float: left;" src="https://cloud.githubusercontent.com/assets/14265605/11158848/979be7da-8a20-11e5-9f43-40886866dea5.png">
 
 e.g. for threads (T) and locks(L) like this:
+
 <img style="float: left;" src="https://cloud.githubusercontent.com/assets/14265605/11158858/b0504e24-8a20-11e5-8af0-c84d2011d1a4.png">
 
 The scheduler should do:
+
 <img style="float: left;" src="https://cloud.githubusercontent.com/assets/14265605/11158874/c9e47c98-8a20-11e5-8f6c-5d19d795a138.png">
 
 Solution problems:
