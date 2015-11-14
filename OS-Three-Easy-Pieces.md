@@ -2357,15 +2357,52 @@ with messages upon them, and replies as needed.
 
 **Blocking** vs **Non-Blocking** interfaces:
 * *Blocking* (or *synchronous*) interfaces do all of theirwork before returning
-to the caller
+to the caller.
  * e.g. I/O
 * *non-blocking* (or *asynchronous*) interfaces begin some work
 but return immediately, thus letting whatever work that needs to be done
 get done in the background.
 
+### Using `select()`
+e.g. Let’s examine how to use select() to see
+which network descriptors have incoming messages upon them.
 
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/time.h>
+#include <sys/types.h>
+#include <unistd.h>
 
+int main(void) {
+ // open and set up a bunch of sockets (not shown)
+ // main loop
+ while (1) {
+  // initialize the fd_set to all zero
+  fd_set readFDs;
+  FD_ZERO(&readFDs); // Macro to clear the set of file descriptors
 
+  // now set the bits for the descriptors
+  // this server is interested in
+  // (for simplicity, all of them from min to max)
+  int fd;
+  for (fd = minFD; fd < maxFD; fd++)
+   FD_SET(fd, &readFDs); // Macro to include all of the file descriptors from minFD to maxFD
+                         // those fd's represent all the network sockets to which the server is paying attention.
+
+  // do the select
+  int rc = select(maxFD+1, &readFDs, NULL, NULL, NULL);
+
+  // check which actually have data using FD_ISSET()
+  int fd;
+  for (fd = minFD; fd < maxFD; fd++)
+  { 
+   if (FD_ISSET(fd, &readFDs)) // which of the descriptors have data ready and process the incoming data.
+    processFD(fd);
+  }
+ }
+}
+```
 
 
 
