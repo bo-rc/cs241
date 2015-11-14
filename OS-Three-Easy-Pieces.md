@@ -2403,7 +2403,39 @@ int main(void) {
  }
 }
 ```
+* why simpler?
+ * no locks needed
 
+## A problem: Blocking system calls
+System calls such as I/O may block, thus wasting computing resources w/o progress
+* A rule in event-based systems: no blocking calls are allowed.
+
+### A Solution: Asynchronous I/O provided by many modern OS
+These interfaces enable an application
+to issue an I/O request and return control immediately to the caller, before
+the I/O has completed.
+* additional interfaces enable an application to
+determine whether various I/Os have completed.
+
+e.g. **AIO control block** on Mac:
+```c
+struct aiocb {
+ int aio_fildes; /* File descriptor */
+ off_t aio_offset; /* File offset */
+ volatile void *aio_buf; /* Location of buffer */
+ size_t aio_nbytes; /* Length of transfer */
+};
+
+int aio_read(struct aiocb *aiocbp); // tries to issue the I/O; if successful, it simply returns right away.
+
+int aio_error(const struct aiocb *aiocbp); // checks whether the request referred to by aiocbp has completed.
+/* If it has, the routine returns success (indicated by a zero);
+ * if not, EINPROGRESS is returned.
+ *
+ * an application can periodically poll the system via a call
+ * to aio_error() to determine whether said I/O has yet completed.
+ */
+```
 
 
 
