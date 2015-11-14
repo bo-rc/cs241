@@ -2315,6 +2315,54 @@ Locks are problematic by their very nature;
 perhaps we should seek to avoid using them unless we truly must.
 
 # [Chap 33](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-events.pdf): Event-based concurrency
+Besides using *threads*, ***event-based concurrency*** is another common style for concurrent programming.
+* used in both GUI-based applications and some types of internet servers.
+ * such as in `node.js`
+
+Problems with *multi-threaded* applications:
+* managing concurrency correctly in multi-threaded applications can be challenging
+ * missing locks, deadlock, and other nasty problems can arise. 
+* In amulti-threaded application, the developer has little or no control over what is scheduled at a givenmoment in time.
+ * OS schedules them in a reasonable manner across available CPUs.
+
+> The Crux: building concurrent servers w/o threads
+
+## The basic idea: An event loop
+The approach is quite simple: you simply wait for something
+(i.e., an “event”) to occur; when it does, you check what type of
+event it is and do the small amount of work it requires (which may include
+issuing I/O requests, or scheduling other events for future handling,
+etc.). That’s it!
+
+Pseudocode:
+```c
+while (1) {
+ events = getEvents();
+ for (e in events)
+  processEvent(e);
+}
+```
+* the code that processes each event is known as an **event handler**.
+* deciding which event to handle next is equivalent to scheduling. 
+ * This explicit control over scheduling is one of the fundamental advantages of the eventbased
+approach.
+
+*how can an event server tell if a message has arrived for it?* 
+* how to receive events?
+
+## An Important API: system calls `select()` (or `poll()`)
+These basic primitives give us away to build a non-blocking
+event loop,which simply checks for incoming packets, reads from sockets
+with messages upon them, and replies as needed.
+
+**Blocking** vs **Non-Blocking** interfaces:
+*Blocking* (or *synchronous*) interfaces do all of theirwork before returning
+to the caller
+* e.g. I/O
+*non-blocking* (or *asynchronous*) interfaces begin some work
+but return immediately, thus letting whatever work that needs to be done
+get done in the background.
+
 
 
 
