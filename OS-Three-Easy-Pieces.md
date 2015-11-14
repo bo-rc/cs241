@@ -2436,17 +2436,35 @@ int aio_error(const struct aiocb *aiocbp); // checks whether the request referre
  * to aio_error() to determine whether said I/O has yet completed.
  */
 ```
+* Problem: if a program has tens or hundreds I/Os issued, should every one be checked repeatedly?
+ * The remedy: interrupt-based Unix ***signal***s to inform applications when an AIO completes.
 
+In systems without asynchronous I/O, the pure event-based approach
+cannot be implemented.
+* but some hybrid method exists ([PDZ99])
 
+## Problems
+*State Management*: multi-threaded programming has state stored in thread's stack after a contect switch.
+* event-based approach needs to do *manual stack management* to store the state in a data structure when event is triggered so that when the AIO of the event is done, handler code can run with the proper state.
 
+With multiple CPUs, some of the simplicity of the event-based approach disappeared.
+* Thus, on modern multicore systems, simple event handling without locks is no longer possible.
 
+The event-based approach is that it does not
+integrate well with certain kinds of systems activity, such as paging.
+* implicit blocking due to page faults is hard to avoid and thus can lead to large
+performance problems when prevalent.
 
+Maintaining the code base is more difficult.
 
+AIO APIs are not well integreated as you think they are.
 
+## Summary
+Event-based servers give control of scheduling
+to the application itself, but do so at some cost in complexity and
+difficulty of integration with other aspects of modern systems (e.g., paging).
 
-
-
-
+# [Chap 34](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-dialogue.pdf): Concurrency Summary
 
 
 
