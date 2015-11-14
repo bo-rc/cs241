@@ -2356,10 +2356,10 @@ event loop,which simply checks for incoming packets, reads from sockets
 with messages upon them, and replies as needed.
 
 **Blocking** vs **Non-Blocking** interfaces:
-*Blocking* (or *synchronous*) interfaces do all of theirwork before returning
+* *Blocking* (or *synchronous*) interfaces do all of theirwork before returning
 to the caller
-* e.g. I/O
-*non-blocking* (or *asynchronous*) interfaces begin some work
+ * e.g. I/O
+* *non-blocking* (or *asynchronous*) interfaces begin some work
 but return immediately, thus letting whatever work that needs to be done
 get done in the background.
 
