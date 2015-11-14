@@ -2465,7 +2465,8 @@ to the application itself, but do so at some cost in complexity and
 difficulty of integration with other aspects of modern systems (e.g., paging).
 
 # [Chap 34](http://pages.cs.wisc.edu/~remzi/OSTEP/threads-dialogue.pdf): Concurrency Summary
-
+Writing correct concurrent code is hard.
+* the [Map-Reduce method](https://en.wikipedia.org/wiki/MapReduce) for writing parallel data analysis code w/o multi-threading.
 
 
 
