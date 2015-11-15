@@ -2468,6 +2468,18 @@ difficulty of integration with other aspects of modern systems (e.g., paging).
 Writing correct concurrent code is hard.
 * the [Map-Reduce method](https://en.wikipedia.org/wiki/MapReduce) for writing parallel data analysis code w/o multi-threading.
 
+# Piece 3: [**Persistance**](http://pages.cs.wisc.edu/~remzi/OSTEP/)
+
+# [Chap 35](http://pages.cs.wisc.edu/~remzi/OSTEP/dialogue-persistence.pdf): Dialogue
+Making information
+persist, despite computer crashes, disk failures, or power outages is a tough and
+interesting challenge.
+
+# [Chap 36](http://pages.cs.wisc.edu/~remzi/OSTEP/file-devices.pdf): I/O Devices
+> Crux: How should I/O be integrated into systems
+
+
+
 
 
 
