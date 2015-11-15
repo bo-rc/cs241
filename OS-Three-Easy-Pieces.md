@@ -2576,4 +2576,9 @@ Solution: **Abstraction**
 how a device works: a device driver
  * Any specifics of device interaction are encapsulated within the device driver.
 
+### The linux file system software stack
+![file-system-stack](https://cloud.githubusercontent.com/assets/14265605/11170683/01d0a1be-8ba1-11e5-9f49-26469c235d18.png)
 
+* The block read and write requests to the generic
+block layer are routed to the appropriate device driver, which
+handles the details of issuing the specific request.
