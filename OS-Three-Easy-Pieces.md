@@ -2537,7 +2537,7 @@ device to check for more packet arrivals.
 
 *Coalescing*: waiting a bit before delivering the interrupt to allow multiple interrupts be coalesced into a single interrupt delivery to reduce the overhead of interrupt processing.
 
-## More Efficient Data MovementWith **DMA**
+## More Efficient Data Movement With **DMA**
 
 With Programmed I/O (PIO), the CPU spends too much time moving data to and from
 devices by hand.
@@ -2551,15 +2551,15 @@ memory without much CPU intervention.
 * The copying of data is now handled by the DMA controller.
 
 ## Methods of Device Interaction
-1. The first, oldest method (used by IBM mainframes for many years) is to have **explicit I/O instructions**. 
-* e.g. x86: the `in` and `out` instructions can be used to communicate
+* The first, oldest method (used by IBM mainframes for many years) is to have **explicit I/O instructions**. 
+ * e.g. x86: the `in` and `out` instructions can be used to communicate
 with devices. For example, to send data to a device, the caller
 specifies a register with the data in it, and a specific port which names the
 device. Executing the instruction leads to the desired behavior.
 
-2. **memory-mapped I/O**
-* The hardware makes device registers available as if they were memory locations.
- * To access a particular register,
+* **memory-mapped I/O**
+ * The hardware makes device registers available as if they were memory locations.
+  * To access a particular register,
 the OS issues a load (to read) or store (to write) the address; the hardware
 then routes the load/store to the device instead of main memory.
 
@@ -2696,8 +2696,8 @@ ideas are all direct outcomes of the nature of fast CPUs and slow
 devices.
 
 OS interacts with a device: two techniques
-* Interrupt
-* DMA
+* Interrupt solves polling's problem
+* DMA controller solves moving data effeciency problem.
 
 Two approaches to access device registers
 * explicit I/O
