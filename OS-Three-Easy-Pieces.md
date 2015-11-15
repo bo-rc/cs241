@@ -2520,7 +2520,7 @@ Note that using interrupts is not always the best solution. For example,
 imagine a device that performs its tasks very quickly: the first poll usually
 finds the device to be done with task. Using an interrupt in this case will
 actually slow down the system.
-* if a device is fast, it may be best to poll (PIO).
+* if a device is fast, it may be best to poll.
 * if it is slow, interrupts.
 * if not-know, or somethimes fast and sometimes slow, use a **hybrid** that polls for a
 little while and then, if the device is not yet finished, uses interrupts. 
@@ -2539,7 +2539,18 @@ device to check for more packet arrivals.
 
 ## More Efficient Data MovementWith **DMA**
 
+With Programmed I/O (PIO), the CPU spends too much time moving data to and from
+devices by hand.
+* Solution: ***Direct Memory Access (DMA)***
+ * A **DMA** engine is essentially a very specific device
+within a system that can orchestrate transfers between devices and main
+memory without much CPU intervention.
 
+![dma](https://cloud.githubusercontent.com/assets/14265605/11170606/152ab832-8b9f-11e5-826c-f614b3a1fc45.png)
+
+* The copying of data is now handled by the DMA controller.
+
+## Methods of Device Interaction
 
 
 
