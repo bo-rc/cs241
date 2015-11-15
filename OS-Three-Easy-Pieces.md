@@ -2476,8 +2476,68 @@ persist, despite computer crashes, disk failures, or power outages is a tough an
 interesting challenge.
 
 # [Chap 36](http://pages.cs.wisc.edu/~remzi/OSTEP/file-devices.pdf): I/O Devices
-> Crux: How should I/O be integrated into systems
+> Crux: How should I/O be integrated into systems? How to make device interaction efficient?
 
+## A Canonical Device
+All devices have 
+* **Hardeware** ***Interface***
+ * and ***Protocol*** for typical interaction.
+* **Internal Structure**
+ * implementation specific; is responsible for implementing the abstraction the device presents to the system.
+ * e.g. modern **RAID** controllers might consist of hundreds of thousands of
+lines of firmware (i.e., software within a hardware device) to implement
+its functionality.
+
+e.g.:
+![canonicaldevice](https://cloud.githubusercontent.com/assets/14265605/11169978/65e4f7c8-8b8c-11e5-8194-970252362d65.png)
+By reading and writing these registers(*Interface*), the operating system
+can control device behavior.
+
+## A Polling Protocol
+```c
+While (STATUS == BUSY)
+; // Polling, wait until device is not busy
+Write data to DATA register
+Write command to COMMAND register
+(Doing so starts the device and executes the command)
+While (STATUS == BUSY)
+; // Polling, wait until device is done with your request
+```
+* works but inefficient.
+
+## Solving polling's problem: the invention of **Interrupt**
+
+1. The OS issues a request, puts the calling
+process to sleep, and context switch to another task. 
+
+2. When the device is finished with the operation, it will raise a *hardware interrupt*,
+causing the CPU to jump into the OS at a pre-determined *interrupt service routine* (**ISR**) or more simply an *interrupt handler*. 
+ * The handler is just a piece of operating system code that will finish the request and wake the process waiting for the I/O, which can then proceed as desired.
+  * for example, by reading data and perhaps an error code from the device 
+ 
+### Problems and Improving Interrupt
+Note that using interrupts is not always the best solution. For example,
+imagine a device that performs its tasks very quickly: the first poll usually
+finds the device to be done with task. Using an interrupt in this case will
+actually slow down the system.
+* if a device is fast, it may be best to poll (PIO).
+* if it is slow, interrupts.
+* if not-know, or somethimes fast and sometimes slow, use a **hybrid** that polls for a
+little while and then, if the device is not yet finished, uses interrupts. 
+ * This *two-phased* approach may achieve the best of both worlds.
+
+Another reason not to use interrupts arises in networks [MR96]. When
+a huge stream of incoming packets each generate an interrupt, it is possible
+for the OS to *livelock*.
+* that is, find itself only processing interrupts
+and never allowing a user-level process to run and actually service the
+requests.
+* use polling occasinally to allow the web server to service some requests before going back to the
+device to check for more packet arrivals.
+
+*Coalescing*: waiting a bit before delivering the interrupt to allow multiple interrupts be coalesced into a single interrupt delivery to reduce the overhead of interrupt processing.
+
+## More Efficient Data MovementWith **DMA**
 
 
 
