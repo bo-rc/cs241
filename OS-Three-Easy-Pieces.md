@@ -2551,6 +2551,29 @@ memory without much CPU intervention.
 * The copying of data is now handled by the DMA controller.
 
 ## Methods of Device Interaction
+1. The first, oldest method (used by IBM mainframes for many years) is to have **explicit I/O instructions**. 
+* e.g. x86: the `in` and `out` instructions can be used to communicate
+with devices. For example, to send data to a device, the caller
+specifies a register with the data in it, and a specific port which names the
+device. Executing the instruction leads to the desired behavior.
 
+2. **memory-mapped I/O**
+* The hardware makes device registers available as if they were memory locations.
+ * To access a particular register,
+the OS issues a load (to read) or store (to write) the address; the hardware
+then routes the load/store to the device instead of main memory.
+
+The memory-mapped approach is nice in that no new instructions are needed
+to support it, but both approaches are still in use today.
+
+## Fitting Into The OS: The Device Driver
+
+> Crux: How can we keep most of the OS device-neutral, thus hiding the details
+of interactions with different devices? (e.g. SCSI disks, USB drives)
+
+Solution: **Abstraction**
+* A piece of software in the OS must know in detail
+how a device works: a device driver
+ * Any specifics of device interaction are encapsulated within the device driver.
 
 
