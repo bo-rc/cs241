@@ -2582,3 +2582,51 @@ how a device works: a device driver
 * The block read and write requests to the generic
 block layer are routed to the appropriate device driver, which
 handles the details of issuing the specific request.
+
+*Downdside*: being generic means we could lost specific features of a device due to comformatioin to an simpler interface.
+
+Drivers represent > 70% of the kernel code.
+* for any give installation, most of that code may not be active.
+* divers are a primary contributor to kernel crashes.
+ * divers are usually written by amateurs rather than kernel developers.
+
+## Case Study: A Simple IDE Disk Driver
+
+*Interface*: four types of registers:
+* control
+* command block
+* status
+* error
+
+```assembly
+// The IDE Interface
+Control Register:
+ Address 0x3F6 = 0x80 (0000 1RE0): R=reset, E=0 means "enable interrupt"
+
+Command Block Registers:
+ Address 0x1F0 = Data Port
+ Address 0x1F1 = Error
+ Address 0x1F2 = Sector Count
+ Address 0x1F3 = LBA low byte
+ Address 0x1F4 = LBA mid byte
+ Address 0x1F5 = LBA hi byte
+ Address 0x1F6 = 1B1D TOP4LBA: B=LBA, D=drive
+ Address 0x1F7 = Command/status
+
+Status Register (Address 0x1F7):
+ 7      6     5     4   3    2    1    0
+ BUSY READY FAULT SEEK DRQ CORR IDDEX ERROR
+
+Error Register (Address 0x1F1): (check when Status ERROR==1)
+ 7    6  5   4    3   2    1    0
+ BBK UNC MC IDNF MCR ABRT T0NF AMNF
+
+ BBK = Bad Block
+ UNC = Uncorrectable data error
+ MC = Media Changed
+ IDNF = ID mark Not Found
+ MCR = Media Change Requested
+ ABRT = Command aborted
+ T0NF = Track 0 Not Found
+ AMNF = Address Mark Not Found
+```
