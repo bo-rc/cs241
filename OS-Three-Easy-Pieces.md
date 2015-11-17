@@ -2707,5 +2707,72 @@ A device driver does the abstraction.
 
 # [Chap 37](http://pages.cs.wisc.edu/~remzi/OSTEP/file-disks.pdf): Hard Disk Drives
 
+## The interface
+The drive consists of a large number of sectors (512-byte blocks), each of which can be read or written.
+* Multi-sector operations are possible.
+  * indeed, many file systems will read or write 4KB at a time (or more). 
+  * a single 512-byte write is *atomic*.
+
+Locality assumption applies to hard disks.
+
+## Basic Geometry
+A drive that rotates at 10,000 RPM means
+that a single rotation takes about 6 milliseconds (6 ms).
+
+## A simple Hard Disk
+On writes, the drive has a choice: should it acknowledge the write has
+completed when it has put the data in its memory, or after the write has
+actually been written to disk? The former is called ***write back*** caching
+(or sometimes immediate reporting), and the latter ***write through***. Write
+back caching sometimes makes the drive appear “faster”, but can be dangerous;
+if the file system or applications require that data be written to
+disk in a certain order for correctness, write-back caching can lead to
+problems.
+
+## I/O Time: doing the math
+T(I/O) = T(seek) + T(rotation) + T(transfer)
+
+The rate of I/O (R(I/O)):
+R(I/O) = Size(transfer) / T(I/O)
+
+## Disk Scheduling
+Due to high cost of I/O, given a set of I/O requests, the disk scheduler examines the requests and decides which one to schedule next.
+
+Becuase the length of disk operations can be estimated accurately, the disk scheduler is able to follow the
+principle of SJF (shortest job first) in its operation.
+* this coulde lead to *starvation*
+  * Solution: *elevator* algorithm: sweeping in one direction then sweeping back in one direction.
+   * not optimal: not considering rotation
+
+Solution: **SPTF** (Shortest Positioning Time First)
+> In engineering, it turns out “it depends” is almost always the answer, reflecting that trade-offs are part of the life of the engineer.
+> when you don’t know an answer to your boss’s question, you might want to try this gem.
+
+On modern drives, both seek and rotation are roughly equivalent.
+* but OS does not know this thus SPTF is usually performed inside the disk controller.
+
+# [Chap 38](http://pages.cs.wisc.edu/~remzi/OSTEP/file-raid.pdf): Redundant Arrays of Inexpensive Disks (RAIDs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
