@@ -2752,7 +2752,16 @@ On modern drives, both seek and rotation are roughly equivalent.
 * but OS does not know this thus SPTF is usually performed inside the disk controller.
 
 # [Chap 38](http://pages.cs.wisc.edu/~remzi/OSTEP/file-raid.pdf): Redundant Arrays of Inexpensive Disks (RAIDs)
+At a high level, a RAID is very much a specialized
+computer system: it has a processor, memory, and disks; however,
+instead of running applications, it runs specialized software designed to
+operate the RAID.
 
+*The RAID Mapping Problem*: 
+```
+Disk = A % number_of_disks
+Offset = A / number_of_disks
+```
 
 
 
