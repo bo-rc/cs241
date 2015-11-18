@@ -2851,7 +2851,33 @@ off_t lseek(int fd, off_t offset, int whence);
 ```
 * `whence` can be: `SEEK_SET`, `SEEK_CUR` and `SEEK_END`
 
+####  Writing Immediately with `fsync()`
+```c
+int fd = open("foo", O_CREAT | O_WRONLY | O_TRUNC);
+assert(fd > -1);
+int rc = write(fd, buffer, size);
+assert(rc == size);
+rc = fsync(fd);
+assert(rc == 0);
+```
+* `fsync()` forces all dirty (i.e., not yet written) data to disk.
+* you also need to `fsync()` the directory that contains the file foo. Adding this step ensures not only that the file itself is on disk, but that the file, if newly created, also is durably a part of the directory.
 
+### Renaming files
+`prompt> strace mv foo bar`
+* using `strace`: mv uses the system call `rename(char *old, char *new)`, which takes precisely two arguments: the original name of the file (`old`) and the new name (`new`).
 
+The `rename()` call is that it is (usually) implemented as an atomic call with respect to system crashes.
+
+e.g. the way a real editor might work when you inserted oneline to a text file:
+```c
+int fd = open("foo.txt.tmp", O_WRONLY|O_CREAT|O_TRUNC); // temperal work on a tmp file
+write(fd, buffer, size); // write out new version of file
+fsync(fd); // force write
+close(fd); // done with the fd, close it to save resources
+rename("foo.txt.tmp", "foo.txt"); // atomically swaps the new file into place, 
+                                  // while concurrently deleting the old version of the file, 
+                                  // and thus an atomic file update is achieved.
+```
 
 
