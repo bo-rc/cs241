@@ -2880,4 +2880,41 @@ rename("foo.txt.tmp", "foo.txt"); // atomically swaps the new file into place,
                                   // and thus an atomic file update is achieved.
 ```
 
+### Getting Information About Files: file's metadata
+
+Use the `stat()` or `fstat()` system calls.
+* take a pathname (or file descriptor) to a file and fill in a stat structure as seen here:
+```c
+struct stat {
+ dev_t st_dev; /* ID of device containing file */
+ ino_t st_ino; /* inode number */
+ mode_t st_mode; /* protection */
+ nlink_t st_nlink; /* number of hard links */
+ uid_t st_uid; /* user ID of owner */
+ gid_t st_gid; /* group ID of owner */
+ dev_t st_rdev; /* device ID (if special file) */
+ off_t st_size; /* total size, in bytes */
+ blksize_t st_blksize; /* blocksize for filesystem I/O */
+ blkcnt_t st_blocks; /* number of blocks allocated */
+ time_t st_atime; /* time of last access */
+ time_t st_mtime; /* time of last modification */
+ time_t st_ctime; /* time of last status change */
+};
+```
+To see this information, you can use the command line tool `stat`:
+```c
+prompt> echo hello > file
+prompt> stat file
+File: ‘file’
+Size: 6 Blocks: 8 IO Block: 4096 regular file
+Device: 811h/2065d Inode: 67158084 Links: 1
+Access: (0640/-rw-r-----) Uid: (30686/ remzi) Gid: (30686/ remzi)
+Access: 2011-05-03 15:50:20.157594748 -0500
+Modify: 2011-05-03 15:50:20.157594748 -0500
+Change: 2011-05-03 15:50:20.157594748 -0500
+```
+* the info. are in a data structure called **inode**.
+
+
+
 
