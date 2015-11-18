@@ -2807,7 +2807,7 @@ Second abstraction: ***directory***
 
 ## The file system interface
 
-*Creating files*:
+### *Creating files*:
 ```c
 int fd = open("foo", O_CREAT | O_WRONLY | O_TRUNC);
 ```
@@ -2822,7 +2822,7 @@ Each running process already has three files open
 * *standard output*: which the process can write to in order to dump information to the screen (fd = 1)
 * *standard error*: which the process can write error messages to (fd = 2)
 
-*Reading and Writing files*:
+### *Reading and Writing files*:
 ```c
 #include <unistd.h>
 ssize_t read(int fd, void *buf, size_t count);
@@ -2843,7 +2843,13 @@ close(3) = 0
 prompt>
 ```
 
-
+#### Reading And Writing, But Not Sequentially
+```c
+#include <sys/types.h>
+#include <unistd.h>
+off_t lseek(int fd, off_t offset, int whence);
+```
+* `whence` can be: `SEEK_SET`, `SEEK_CUR` and `SEEK_END`
 
 
 
