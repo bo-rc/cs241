@@ -2763,14 +2763,38 @@ Disk = A % number_of_disks
 Offset = A / number_of_disks
 ```
 
+## RAID Level 4: Saving Space with Parity
+Determine parity using `XOR`:
+![raid-4](https://cloud.githubusercontent.com/assets/14265605/11230676/76cc3f84-8d66-11e5-9b86-64269aec3202.png)
+![raid-4-xor](https://cloud.githubusercontent.com/assets/14265605/11230705/ac1582c2-8d66-11e5-94df-259ca3430d1a.png)
+* bitwise `XOR` across each bit of the data blocks, put the result into the corresponding bit slot in the parity block.
+* We can reconstruct the information if only one disk fails.
 
+*small-write* Problem: Even though the data disks could be accessed in
+parallel, the parity disk prevents any parallelism from materializing;
 
+## RAID Level 5: Rotating Parity
+In order to remove the parity-disk bottleneck for RAID-4:
+![raid-5](https://cloud.githubusercontent.com/assets/14265605/11230834/40ba9baa-8d68-11e5-8934-232b5479d2c4.png)
 
+We can generally assume that given a large number of random requests, we
+will be able to keep all the disks about evenly busy. If that is the case,
+then our total bandwidth for small writes will be `N/4 * R MB/s`. The factor
+of four loss is due to the fact that each RAID-5 write still generates 4 total
+I/O operations, which is simply the cost of using parity-based RAID.
 
+## Summary
+![raid-summary](https://cloud.githubusercontent.com/assets/14265605/11230875/de406cc4-8d68-11e5-9b21-de3f5516458f.png)
 
+To conclude, if you strictly want performance and do not care about
+reliability, striping is obviously best. If, however, you want random I/O
+performance and reliability, mirroring is the best; the cost you pay is in
+lost capacity. If capacity and reliability are your main goals, then RAID-
+5 is the winner; the cost you pay is in small-write performance. Finally,
+if you are always doing sequential I/O and want to maximize capacity,
+RAID-5 also makes the most sense.
 
-
-
+# [Chap 39](http://pages.cs.wisc.edu/~remzi/OSTEP/file-intro.pdf): Interlude: File and Directories
 
 
 
