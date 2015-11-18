@@ -2798,11 +2798,29 @@ RAID-5 also makes the most sense.
 Pieces of the virtualization puzzle:
 * the **process**: a virtualization of the CPU
 * the **address space**: a virtualization of the memory
-* **persistent storage**: utilities for the virtualizatioin 
+* **persistent storage**: a virtualizatioin of a persistent file system which makes sure that when you request the data again, you get what you put there in the first place.
 
+First abstraction: ***file***: a linear array of bytes
+* low-level name: ***inode number***
 
+Second abstraction: ***directory***
 
+## The file system interface
 
+*Creating files*:
+```c
+int fd = open("foo", O_CREAT | O_WRONLY | O_TRUNC);
+```
+* the older way of creating a file is to call `creat()`:
+* `int fd = creat("foo");
+  * equivalent to `open()` with the following flags: `O CREAT | O WRONLY | O TRUNC` 
+
+A ***file descriptor*** is just an integer, private per process, and is used in UNIX systems to access files.
+
+Each running process already has three files open
+* *standard input*: which the process can read to receive input (fd = 0)
+* *standard output*: which the process can write to in order to dump information to the screen (fd = 1)
+* *standard error*: which the process can write error messages to (fd = 2)
 
 
 
