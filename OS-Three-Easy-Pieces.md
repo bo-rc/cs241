@@ -2938,8 +2938,30 @@ mkdir("foo", 0777) = 0
 ```
 * This creates an empty directory: still has two entries: `.` and `..`.
 
-### Reading Directories: 
+### Reading Directories: `opendir()`, `readdir()`, and `closedir()`
+Let's implement Unix `ls`:
+```c
+struct dirent {
+ char d_name[256]; /* filename */
+ ino_t d_ino; /* inode number */
+ off_t d_off; /* offset to the next dirent */
+ unsigned short d_reclen; /* length of this record */
+ unsigned char d_type; /* type of file */
+};
 
+int main(int argc, char *argv[]) {
+ DIR *dp = opendir(".");
+ assert(dp != NULL);
+ struct dirent *d;
+ while ((d = readdir(dp)) != NULL) {
+  printf("%d %s\n", (int) d->d_ino, d->d_name);
+ }
+ closedir(dp);
+ return 0;
+}
+```
+
+###
 
 
 
