@@ -2795,7 +2795,10 @@ if you are always doing sequential I/O and want to maximize capacity,
 RAID-5 also makes the most sense.
 
 # [Chap 39](http://pages.cs.wisc.edu/~remzi/OSTEP/file-intro.pdf): Interlude: File and Directories
-
+Pieces of the virtualization puzzle:
+* the **process**: a virtualization of the CPU
+* the **address space**: a virtualization of the memory
+* **persistent storage**: utilities for the virtualizatioin 
 
 
 
