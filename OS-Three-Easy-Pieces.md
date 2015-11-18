@@ -2807,7 +2807,7 @@ Second abstraction: ***directory***
 
 ## The file system interface
 
-### *Creating files*:
+### *Creating files*: `open()`
 ```c
 int fd = open("foo", O_CREAT | O_WRONLY | O_TRUNC);
 ```
@@ -2822,7 +2822,7 @@ Each running process already has three files open
 * *standard output*: which the process can write to in order to dump information to the screen (fd = 1)
 * *standard error*: which the process can write error messages to (fd = 2)
 
-### *Reading and Writing files*:
+### *Reading and Writing files*: `read()` `write()`
 ```c
 #include <unistd.h>
 ssize_t read(int fd, void *buf, size_t count);
@@ -2843,7 +2843,7 @@ close(3) = 0
 prompt>
 ```
 
-#### Reading And Writing, But Not Sequentially
+#### Reading And Writing, But Not Sequentially: `lseek()`
 ```c
 #include <sys/types.h>
 #include <unistd.h>
@@ -2863,7 +2863,7 @@ assert(rc == 0);
 * `fsync()` forces all dirty (i.e., not yet written) data to disk.
 * you also need to `fsync()` the directory that contains the file foo. Adding this step ensures not only that the file itself is on disk, but that the file, if newly created, also is durably a part of the directory.
 
-### Renaming files
+### Renaming files: `rename()`
 `prompt> strace mv foo bar`
 * using `strace`: mv uses the system call `rename(char *old, char *new)`, which takes precisely two arguments: the original name of the file (`old`) and the new name (`new`).
 
@@ -2880,7 +2880,7 @@ rename("foo.txt.tmp", "foo.txt"); // atomically swaps the new file into place,
                                   // and thus an atomic file update is achieved.
 ```
 
-### Getting Information About Files: file's metadata
+### Getting Information About Files: file's metadata: `stat()` `fstat()`
 
 Use the `stat()` or `fstat()` system calls.
 * take a pathname (or file descriptor) to a file and fill in a stat structure as seen here:
@@ -2914,6 +2914,31 @@ Modify: 2011-05-03 15:50:20.157594748 -0500
 Change: 2011-05-03 15:50:20.157594748 -0500
 ```
 * the info. are in a data structure called **inode**.
+
+### Removing files: `unlink()`
+```
+prompt> strace rm foo
+...
+unlink("foo") = 0
+...
+```
+* why a name *unlink*?
+
+### Making Directories: `mkdir()`
+
+The format of the *directory* is considered file system *metadata*.
+* You can never write to a directory directly.
+* you can only update a directory indirectly by, e.g., creating files, directories, or other object types within it.
+
+```
+prompt> strace mkdir foo
+...
+mkdir("foo", 0777) = 0
+...
+```
+* This creates an empty directory: still has two entries: `.` and `..`.
+
+### Reading Directories: 
 
 
 
