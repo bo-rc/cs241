@@ -2822,7 +2822,26 @@ Each running process already has three files open
 * *standard output*: which the process can write to in order to dump information to the screen (fd = 1)
 * *standard error*: which the process can write error messages to (fd = 2)
 
+*Reading and Writing files*:
+```c
+#include <unistd.h>
+ssize_t read(int fd, void *buf, size_t count);
+ssize_t write(int fd, const void *buf, size_t count);
+```
 
+Use the `strace` linux command:
+```
+prompt> strace cat foo
+...
+open("foo", O_RDONLY|O_LARGEFILE) = 3
+read(3, "hello\n", 4096) = 6
+write(1, "hello\n", 6) = 6
+hello
+read(3, "", 4096) = 0
+close(3) = 0
+...
+prompt>
+```
 
 
 
