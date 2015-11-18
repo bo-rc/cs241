@@ -3006,3 +3006,17 @@ Unix command `ln -s`
 * creating a soft link does not increase the reference count.
  * deleting does not decrease the reference count.
 
+### Making and Mounting a File System: `mkfs` and `mount`
+How to create a full directory tree:
+* step 1: make a file system: `mkfs`
+* step 2: make the file system accessible: `mount`
+`prompt> mount -t ext3 /dev/sda1 /home/users`
+* mount unifies all file systems into one tree, making naming uniform and convenient.
+
+# [Chap 40](http://pages.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf): File System Implementation
+
+
+
+
+
+
