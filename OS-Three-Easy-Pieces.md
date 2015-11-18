@@ -2923,6 +2923,11 @@ unlink("foo") = 0
 ...
 ```
 * why a name *unlink*?
+When the file system unlinks file, it
+checks a *reference count* within the inode number.
+Only when the reference count reaches zero
+does the file system also *free the inode* and related data blocks, and thus
+truly “delete” the file.
 
 ### Making Directories: `mkdir()`
 
@@ -2961,7 +2966,43 @@ int main(int argc, char *argv[]) {
 }
 ```
 
-###
+### Deleting Directories: `rmdir()`
 
+### Hard Links: reference counting of inodes: `link()` `unlink()`
+Unix command `ln` (`link()`) creates another name and refers it to the same inode number of the orignal file. 
+* no file is duplicated.
+```
+prompt> echo hello > file
+prompt> cat file
+hello
+prompt> ln file file2
+prompt> cat file2
+hello
 
+prompt> ls -i file file2
+67158084 file
+67158084 file2 # same inode number, same file
+prompt>
+```
+
+When you create a file, you are really doing two things:
+* First, making an *inode structure*
+  * which tracks virtually all relevant information about the file, including its size, where its blocks are on disk, and
+so forth. 
+* Second, *linking* a human-readable name to that file, and putting that link into a directory.
+
+You can’t create one to a directory.
+* for fear that you will create a cycle in the directory tree.
+you can’t hard link to files in other disk partitions.
+* because inode numbers are only unique within a particular file system, not across file systems.
+
+### Symbolic Links: soft link
+Unix command `ln -s`
+
+#### Hard link vs. Soft link
+* a soft link is actually another file itself.
+* a soft link file has variable file sizes
+  * depending on the path of the linked-to file: soft link stores the *pathname* of the linked-to file.
+* creating a soft link does not increase the reference count.
+ * deleting does not decrease the reference count.
 
