@@ -3015,6 +3015,32 @@ How to create a full directory tree:
 
 # [Chap 40](http://pages.cs.wisc.edu/~remzi/OSTEP/file-implementation.pdf): File System Implementation
 
+The file system is pure software.
+
+## A simple file system (**vsfs**)
+
+Two aspects:
+* data structure of a file system
+* access methods of a file system
+
+![vsfs](https://cloud.githubusercontent.com/assets/14265605/11261005/1d594c00-8e36-11e5-8e5d-c481f880c707.png)
+* We divide the disk into 4KB blocks.
+* Superblock: contains info. about this particular file system, e.g. number of inodes and data blocks, where the inode table begins etc.
+* inode/data bitmap: each bit is used to indicate whether the corresponding object/block is free (0) or in-use (1).
+  * our **free list** of the file system
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
