@@ -3029,8 +3029,19 @@ Two aspects:
 * inode/data bitmap: each bit is used to indicate whether the corresponding object/block is free (0) or in-use (1).
   * our **free list** of the file system
 
+### The inode
+The name *inode* is short for *index node*, it has a historical reason.
+* dnodes, fnodes etc. on other systems
 
+***Inode*** holds the ***metadata*** for a given ***file***.
 
+Design of the inode is one key part of file system design. 
+
+Each inode is implicitly referred to by a number (called the ***inumber***),
+which we’ve earlier called the ***low-level name*** of the file.
+* given *inumber*, we can *locate* the inode.
+
+![inode](https://cloud.githubusercontent.com/assets/14265605/11261349/4a5c111c-8e39-11e5-9425-f205f8dd92ce.png)
 
 
 
