@@ -3034,6 +3034,27 @@ The name *inode* is short for *index node*, it has a historical reason.
 * dnodes, fnodes etc. on other systems
 
 ***Inode*** holds the ***metadata*** for a given ***file***.
+e.g. The Ext2 Inode:
+|Size | Name | What is this inode field for?|
+|:---:|:----:|:----------------------------:|
+|2 |mode |can this file be read/written/executed?|
+|2 |uid |who owns this file?|
+|4 |size |how many bytes are in this file?|
+|4 |time |what time was this file last accessed?|
+|4 |ctime |what time was this file created?|
+|4 |mtime |what time was this file last modified?|
+|4 |dtime |what time was this inode deleted?|
+|2 |gid |which group does this file belong to?|
+|2 |links_count |how many hard links are there to this file?|
+|4 |blocks |how many blocks have been allocated to this file?|
+|4 |flags |how should ext2 use this inode?|
+|4 |osd1 |an OS-dependent field|
+|60| block |a set of disk pointers (15 total)|
+|4 |generation |file version (used by NFS)|
+|4 |file_acl |a new permissions model beyond mode bits|
+|4 |dir_acl |called access control lists|
+|4 |faddr |an unsupported field|
+|12| i_osd2 |another OS-dependent field|
 
 Design of the inode is one key part of file system design. 
 
@@ -3043,6 +3064,11 @@ which we’ve earlier called the ***low-level name*** of the file.
 
 ![inode](https://cloud.githubusercontent.com/assets/14265605/11261349/4a5c111c-8e39-11e5-9425-f205f8dd92ce.png)
 
+The sector address `iaddr` of the inode block can be calculated as follows:
+```
+blk = (inumber * sizeof(inode_t)) / blockSize;
+sector = ((blk * blockSize) + inodeStartAddr) / sectorSize;
+```
 
 
 
