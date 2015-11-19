@@ -3071,8 +3071,26 @@ blk = (inumber * sizeof(inode_t)) / blockSize;
 sector = ((blk * blockSize) + inodeStartAddr) / sectorSize;
 ```
 
+#### Supporting big files
+* *multi-level index* (indirect pointers) method: ext2, ext3
+* *extents* (pointer + length info) method: ext4
 
+Researches show that *most files are small*.
+* optimize for this size: with a small number of direct pointers (12 is a typical number), an inode can directly point to 48 KB of data, needing one (or more) indirect blocks for larger files.
 
+File system measurement summary:
+* Most files are small: Roughly 2K is the most common size
+* Average file size is growing: Almost 200K is the average
+* Most bytes are stored in large files: A few big files use most of the space
+* File systems contains lots of files: Almost 100K on average
+* File systems are roughly half full: Even as disks grow, file systems remain ~50% full
+* Directories are typically small: Many have few entries; most have 20 or fewer
+
+Another design of inode data structure to support big files: Linked-list based.
+* optimization: hash table of next pointers to speedup random access.
+  * this is called **File Allocation Table**, or **FAT** file system.
+
+## Directory Organization
 
 
 
