@@ -3091,11 +3091,22 @@ Another design of inode data structure to support big files: Linked-list based.
   * this is called **File Allocation Table**, or **FAT** file system.
 
 ## Directory Organization
+A directory basically just contains a list of `(entry name, inode number)` pairs.
 
+```
+inum | reclen | strlen | name
+5        4        2       .
+2        4        3       ..
+12       4        4       foo
+13       4        4       bar
+24       8        7       foobar
+````
+* Keeping a record length (`reclen`): a new entry may reuse a deleted (`unlinked`) old, bigger entry.
+* Often, file systems treat directories as a special type of file. Thus, a directory has an inode, somewhere in the inode table, data blocks live in the data block region of our simple file system.
 
+The linear list of directory entries is not the only way to store such info.: XFS uses **B-tree** data structure.
 
-
-
+## Free Space Management
 
 
 
