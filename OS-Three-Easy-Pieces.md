@@ -3035,6 +3035,7 @@ The name *inode* is short for *index node*, it has a historical reason.
 
 ***Inode*** holds the ***metadata*** for a given ***file***.
 e.g. The Ext2 Inode:
+
 |Size | Name | What is this inode field for?|
 |:---:|:----:|:----------------------------:|
 |2 |mode |can this file be read/written/executed?|
