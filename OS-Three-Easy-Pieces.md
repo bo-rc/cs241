@@ -3177,12 +3177,33 @@ inodes first: to balacne.
 > CS stands for Computer Sciences or Common Sense maybe?
 
 ## The large-File exception
+A large file could use all space in one group.
+* other files in the same directory won't be store in the same group.
 
+Solution: spread large file into separate groups.
+* use a proper chunck size threshold to determine when to separate.
+ * leads to more seek time, but the seek time will be amortized among large data transfers so the final amortized-average bandwidth won't be bad.
+ 
+## Other innovatioins of FFS
+**sub-blocks** to cater small files.
+* when the sub-blocks are filled to the amount of a normal block, copy the data to a normal block.
+* more I/O involved, so the real solution is:
+ * the `libc` library would buffer writes and then issue them in 4KB chunks to the file system, thus avoiding
+the sub-block specialization entirely in most cases.
 
+**Parameterized placement** to solve sequential reading problem due to the constant rotation.
+* FFS can compute the specific performance parameters, i.e. how many blocks it should skip in doing layout in order to avoid the extra rotations, and use those to decide on the layout scheme.
+ * modern disk also uses **track buffer** to cache an entire track.
 
+![parameterized-placement](https://cloud.githubusercontent.com/assets/14265605/11325252/ec73ad8e-910e-11e5-9b63-b115a352d1ad.png)
 
+*Long file names*, atomic `rename()` and **symbolic link** introduced by FFS.
+* Hard links cannot point to directories; soft links can.
+* they are very usable features.
+ * Making a system usable is often as or more important than its deep technical innovations.
 
-
+Today many file systems take cues from FFS
+* e.g. Linux ext2 and ext3 are obvious intellectual descendants.
 
 
 
