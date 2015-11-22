@@ -3279,9 +3279,9 @@ records; any such revoked data is never replayed.
 
 ### Journaling timeline
 
-https://cloud.githubusercontent.com/assets/14265605/11326805/15c62084-9139-11e5-9399-0ac0069f8b6d.png
+![data-journaling](https://cloud.githubusercontent.com/assets/14265605/11326805/15c62084-9139-11e5-9399-0ac0069f8b6d.png)
 
-https://cloud.githubusercontent.com/assets/14265605/11326809/1a93bcd4-9139-11e5-8662-31fdf2ff0269.png
+![metadata-journaling](https://cloud.githubusercontent.com/assets/14265605/11326809/1a93bcd4-9139-11e5-8662-31fdf2ff0269.png)
 
 ## Other approaches to achieve consistency
 *Soft Updates*
