@@ -3238,6 +3238,33 @@ an ext3 file system with a journal looks like this:
 |super|Journal|group 0|group 1|...|group N|
 |:---:|:-----:|:-----:|:-----:|:-:|:-----:|
 
+Operations:
+1. **Journal write**: Write the contents of the transaction (including TxB,
+metadata, and data) to the log; wait for these writes to complete.
+
+2. **Journal commit**: Write the transaction commit block (containing
+TxE) to the log; wait for write to complete; transaction is said to be
+committed.
+* Use *checksum* to omit this step and improve performance and reliability. (in Linux ext4)
+
+3. **Checkpoint**: Write the contents of the update (metadata and data)
+to their final on-disk locations.
+
+Recovery: When the
+system boots, the file system recovery process will scan the log and look
+for transactions that have committed to the disk; these transactions are
+thus replayed (in order), with the file system again attempting to write
+out the blocks in the transaction to their final on-disk locations. 
+
+One can buffer updates into a global transaction to reduce I/O traffic.
+
+Journaling file systems treat the log as a
+*circular data structure*, re-using it over and over; this is why the journal is
+sometimes referred to as a **circular log**.
+
+4. Free: Some time later, mark the transaction free in the journal by
+updating the journal superblock.
+
 
 
 
