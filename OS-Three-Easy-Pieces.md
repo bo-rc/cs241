@@ -3238,19 +3238,24 @@ an ext3 file system with a journal looks like this:
 |super|Journal|group 0|group 1|...|group N|
 |:---:|:-----:|:-----:|:-----:|:-:|:-----:|
 
-Operations:
-1. **Journal write**: Write the contents of the transaction (including TxB,
-metadata, and data) to the log; wait for these writes to complete.
+***data journaling protocol***:
 
-2. **Journal commit**: Write the transaction commit block (containing
+1. Data write: Write data to final location; wait for completion.
+ * By forcing the data write first, a file system can guarantee that a pointer will never point to garbage.
+ * the wait is optional: just to make sure 1. and 2. complete before 3..
+
+2. **Journal write**: Write the contents of the transaction (including TxB,
+metadata, not data (***Metadata Journaling***)) to the log; wait for these writes to complete.
+
+3. **Journal commit**: Write the transaction commit block (containing
 TxE) to the log; wait for write to complete; transaction is said to be
 committed.
  * Use *checksum* to omit this step and improve performance and reliability. (in Linux ext4)
 
-3. **Checkpoint**: Write the contents of the update (metadata and data)
+4. **Checkpoint**: Write the contents of the update (metadata and data)
 to their final on-disk locations.
 
-4. Free: Some time later, mark the transaction free in the journal by
+5. Free: Some time later, mark the transaction free in the journal by
 updating the journal superblock.
 
 Recovery: When the
@@ -3265,6 +3270,7 @@ Journaling file systems treat the log as a
 *circular data structure*, re-using it over and over; this is why the journal is
 sometimes referred to as a **circular log**.
 
+#### Corner cases
 
 
 
