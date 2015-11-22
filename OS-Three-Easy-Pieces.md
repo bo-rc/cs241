@@ -3206,6 +3206,43 @@ Today many file systems take cues from FFS
 * e.g. Linux ext2 and ext3 are obvious intellectual descendants.
 
 # [Chap 42](http://pages.cs.wisc.edu/~remzi/OSTEP/file-journaling.pdf): Crash Consistency: FSCK and Journaling
+File system data structures must persist: the crash-consistency problem or the consistent-update problem.
+* e.g. bitmap, inode metadata, data block have to be consistent.
+
+Methods: `fsck` (file system checker), **journaling** (aka write-ahead logging).
+
+### The File System Checker
+Unix tool `fsck`:  let inconsistencies happen and then fix them later (when rebooting).
+* The only real goal is to make sure the file system metadata is internally consistent.
+ * certain problems cannot be fixed:  e.g., the case where the file system looks consistent but the inode points to garbage data.
+
+`fsck` runs before the file system is mounted and made available.
+Checking the whole file system is slow.
+* not very practical for modern large diskes (and RAIDs).
+
+### Journaling (aka write-ahead logging)
+Use cases: Linux ext3 and ext4, reiserfs, IBM’s JFS, SGI’s XFS, and Windows NTFS.
+
+Basic idea: when updating the disk, before overwriting
+the structures in place, first write down a little note (somewhere
+else on the disk, in a well-known location) describing what you are about
+to do.
+* so later we know exactly what to fix and how to fix it.
+
+#### Linux ext3 journaling
+ The new key structure is the journal itself, which occupies
+some small amount of space within the partition or on another device.
+
+an ext3 file system with a journal looks like this:
+
+|super|Journal|group 0|group 1|...|group N|
+|:---:|:-----:|:-----:|:-----:|:-:|:-----:|
+
+
+
+
+
+
 
 
 
