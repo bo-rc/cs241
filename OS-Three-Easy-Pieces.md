@@ -3148,7 +3148,66 @@ for anywhere between five and thirty seconds.
 * Databases: to avoid unexpected data loss due to write buffering, they simply force
 writes to disk, by calling `fsync()`.
 
-# [Chap 41](http://pages.cs.wisc.edu/~remzi/OSTEP/file-ffs.pdf): Fast File Systems (FFS)
+# [Chap 41](http://pages.cs.wisc.edu/~remzi/OSTEP/file-ffs.pdf): Locality and The Fast File Systems (FFS)
+
+***internal fragmentation***: waste within a block.
+***external fragmentation***: discontinuous segments of free blocks layout.
+
+## FFS: Disk awareness is the solution
+To design the file system structures and allocation policies to be “disk aware” and
+thus improve performance.
+* API system calls not changed
+* the internal implementation changed
+
+### Organizing structure: The Cylinder Group
+Locality: disk is organized as several ***cylinder groups***.
+
+![ffs](https://cloud.githubusercontent.com/assets/14265605/11324916/00c0ea4a-9105-11e5-851f-6de306f9b6e9.png)
+
+### Policies: how to allocate files and directories
+The basic mantra is simple: keep related stuff together.
+* and its corollary, keep unrelated stuff far apart.
+
+How to determine being related or not?
+* FFS uses a few simple placement heuristics:
+ * The placement of directories: the cylinder group with a low number of allocated directories and a high number of free
+inodes first: to balacne.
+ * The placement of files: all data blocks in the same group of the same directory they are in.
+
+> CS stands for Computer Sciences or Common Sense maybe?
+
+## The large-File exception
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
