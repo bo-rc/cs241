@@ -3270,7 +3270,35 @@ Journaling file systems treat the log as a
 *circular data structure*, re-using it over and over; this is why the journal is
 sometimes referred to as a **circular log**.
 
-#### Corner cases
+#### Corner case: Block Reuse
+
+Journal log has write events logged in sequence but new data block could use previous deleted block. During replaying, predecessor data block recovery could overwrite succcessor's data.
+
+Solution: Linux ext3 uses a **revoke record**: When replaying the journal, the system first scans for such revoke
+records; any such revoked data is never replayed.
+
+### Journaling timeline
+
+https://cloud.githubusercontent.com/assets/14265605/11326805/15c62084-9139-11e5-9399-0ac0069f8b6d.png
+
+https://cloud.githubusercontent.com/assets/14265605/11326809/1a93bcd4-9139-11e5-8662-31fdf2ff0269.png
+
+## Other approaches to achieve consistency
+*Soft Updates*
+
+***copy-on-write***
+
+*backpointer-based consistency*: When accessing
+a file, the file system can determine if the file is consistent by checking if
+the forward pointer (e.g., the address in the inode or direct block) points
+to a block that refers back to it. 
+
+*optimistic crash consistency*: uses a generalized form of the *transaction checksum*.
+
+# [Chap 43](http://pages.cs.wisc.edu/~remzi/OSTEP/file-lfs.pdf): Log-structured File Systems
+
+
+
 
 
 
