@@ -3205,6 +3205,7 @@ the sub-block specialization entirely in most cases.
 Today many file systems take cues from FFS
 * e.g. Linux ext2 and ext3 are obvious intellectual descendants.
 
+# [Chap 42](http://pages.cs.wisc.edu/~remzi/OSTEP/file-journaling.pdf): Crash Consistency: FSCK and Journaling
 
 
 
