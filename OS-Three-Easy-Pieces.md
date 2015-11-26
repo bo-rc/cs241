@@ -485,7 +485,7 @@ When the kernel boots up, it allocates a number of *object caches* for kernel ob
 Making coalescing simple.
 
 In such a system, free memory is first conceptually thought of as one
-big space of size 2^N . When a request for memory is made, the search for
+big space of size 2<sup>N</sup> . When a request for memory is made, the search for
 free space recursively divides free space by two until a block that is big
 enough to accommodate the request is found (and a further split into two
 would result in a space that is too small). At this point, the requested
@@ -609,7 +609,7 @@ However, as you can see in the TLB, there are only 19 bits for the
 space (the rest reserved for the kernel) and hence only 19 bits of **VPN**
 are needed. The **VPN** translates to *up to* a 24-bit physical frame number
 (**PFN**), and hence can support systemswith up to 64GB of (physical)main
-memory (2^24 4KB pages).
+memory (2<sup>24</sup> 4KB pages).
 
 The **MIPS** provides four such instructions: `TLBP`,
 which probes the **TLB** to see if a particular translation is in there; `TLBR`,
