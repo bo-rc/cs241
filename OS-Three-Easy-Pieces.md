@@ -3300,10 +3300,57 @@ to a block that refers back to it.
 To exploit modern disk design, e.g. larger cache, make *all* writes ***sequential writes***.
 * basic idea: write **metadata** with data together in a sequential manner in the same block or adjacent blocks.
 
+## Writing sequentially and effectively
+***LFS***: 
+* To achieve good write performance: issue a large number of contiguous writes (or one large write) to the drive.
+ * write buffering
+* Never overwrite in place.
 
+## How much to buffer
+It depends on the disk itself.
+* positioning overhead in comparison to the transfer rate.
+ * to amortize the cost
 
+![data-block-buffer-size](https://cloud.githubusercontent.com/assets/14265605/11454844/5a700f90-9604-11e5-8971-341265ec3e96.png)
 
+## The **inode map** (**imap**)
 
+In **LFS**, inodes are scattered all throughout the disk along with corresponding data.
+* the latest version of an inode (i.e., the one we want) keeps moving.
+
+*Solution through indirection*: the ***inode map*** (**imap**) + ***check-poiint region*** (**CR**)
+* The **imap** is a data structure that takes an inode number
+as input and produces the disk address of the most recent version of the
+inode.
+ * The imap, unfortunately, needs to be kept persistent (i.e., written to disk);
+* the **CR**, stored at a fixed place, is the entry point of each **imap** data structure.
+
+LFS places chunks of the inode map right next to where it is
+writing all of the other new information:
+
+![imap](https://cloud.githubusercontent.com/assets/14265605/11454994/cf9add34-960b-11e5-8517-7702e4f349a0.png)
+
+LFS places **CR** at a fixed place on disk:
+
+![cr](https://cloud.githubusercontent.com/assets/14265605/11455020/356c9e94-960d-11e5-805e-dfaeef79f9fb.png)
+* the entire imap will be cached in memory.
+
+LFS works due to large sequential writes which amortizes away overheads.
+
+## How about directories?
+
+A directory is just a collection of `(name, inode number)` mappings.
+* treat it as a normal file, and store the inode info. (location of the directory "file" data block (stores the mapping of `(filename, k)`)) in imap too:
+
+![imap-dir](https://cloud.githubusercontent.com/assets/14265605/11455045/8c0ee4ea-960e-11e5-8036-bc3c608fba18.png)
+
+Through indirection, LFS avoids the *recursive update problem of parent directories*
+* Even though the location of an inode may change, the change is never reflected in the
+directory itself
+ * rather, the imap structure is updated while the directory
+holds the same `(filename, k)` mapping.
+
+## Garbage Collection needed
 
 
 
