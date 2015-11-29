@@ -3297,6 +3297,8 @@ to a block that refers back to it.
 
 # [Chap 43](http://pages.cs.wisc.edu/~remzi/OSTEP/file-lfs.pdf): Log-structured File Systems
 
+To exploit modern disk design, e.g. larger cache, make *all* writes ***sequential writes***.
+* basic idea: write **metadata** with data together in a sequential manner in the same block or adjacent blocks.
 
 
 
