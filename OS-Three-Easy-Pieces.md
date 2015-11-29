@@ -3303,8 +3303,10 @@ To exploit modern disk design, e.g. larger cache, make *all* writes ***sequentia
 ## Writing sequentially and effectively
 ***LFS***: 
 * To achieve good write performance: issue a large number of contiguous writes (or one large write) to the drive.
- * write buffering
+ * writes buffering in an in-memory **segment**, when segment is full it is written to disk in one long, sequential transfer to an unused part of the disk.
 * Never overwrite in place.
+ * old data is kept until new version is commited on disk: solves the persistence problem
+ * if old data is never deleted, such system is called: *versioning file system* (LFS only stores the latest.)
 
 ## How much to buffer
 It depends on the disk itself.
@@ -3351,6 +3353,7 @@ directory itself
 holds the same `(filename, k)` mapping.
 
 ## Garbage Collection needed
+## Dtermining block liveness
 
 
 
