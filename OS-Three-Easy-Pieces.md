@@ -3353,13 +3353,27 @@ directory itself
 holds the same `(filename, k)` mapping.
 
 ## Garbage Collection needed
-## Dtermining block liveness
+### Dtermining block liveness
+LFS includes, for each data block D, its inode number
+(which file it belongs to) and its offset (which block of the file this is). This
+information is recorded in a structure at the head of the segment known
+as the ***segment summary block***.
 
+```
+// for a block D located on disk at address disk_address
+(inode_num, offset) = SegmentSummary[disk_address];
+inode = Read(imap[inode_num]);
+if (inode[offset] == disk_address) // this step can be optimized away via versioning numbers
+// block D is alive
+else
+// block D is garbage
+```
+* can be optimized if *version number* is also stored.
+ * By also recording the version number in the on-disk segment,
+LFS can short circuit by comparing the on-disk version number with a version number in the imap, thus
+avoiding extra reads.
 
-
-
-
-
+### Policy: Which block to clean, and when?
 
 
 
