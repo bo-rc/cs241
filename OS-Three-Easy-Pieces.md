@@ -3374,19 +3374,30 @@ LFS can short circuit by comparing the on-disk version number with a version num
 avoiding extra reads.
 
 ### Policy: Which block to clean, and when?
+*When*: either periodically, during idle time, or when you have to because the disk is full.
+*Which*: segragate *hot* and *cold* segments, clean *cold* segments
+sooner and *hot* segments later, and develop a heuristic that does exactly
+that.
 
+## Crash Recovery and the Log
+First, make sure **CR** is updated atomically.
+* keeps two **CR**s at both ends of the disk and writes to them alternatly.
+* keeps *timestamp* before and after **CR** updates and use the most recent **CR** with consistent timestamps.
 
+Second, make sure **segment** is consistent.
+use *roll forward* to rebuild as much as it could the inconsistent segments during reboot.
 
+## Summary
+LFS introduces a new approach to updating the disk. Instead of overwriting
+files in places, LFS always writes to an unused portion of the
+disk, and then later reclaims that old space through cleaning.
+* called *shadow paging* in database systems, *copy-on-write* in file-system-speak.
+* idea insights NetApp's **WAFL**, Sun's **ZFS**, Linux **btrfs**
 
+LFS generate garbages
+* could be time-machine features too.
 
-
-
-
-
-
-
-
-
+# [Chap 44](http://pages.cs.wisc.edu/~remzi/OSTEP/file-integrity.pdf): Data Integrity and Protection
 
 
 
