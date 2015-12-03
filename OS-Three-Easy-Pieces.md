@@ -3428,4 +3428,7 @@ Typical systems schedule scans on a nightly or weekly basis.
 
 # [Chap 45](http://pages.cs.wisc.edu/~remzi/OSTEP/file-dialogue.pdf): Summary Dialogue on Persistence
 
+# [Chap 46](http://pages.cs.wisc.edu/~remzi/OSTEP/dialogue-distribution.pdf): A Dialogue on Distribution
+
+
 
