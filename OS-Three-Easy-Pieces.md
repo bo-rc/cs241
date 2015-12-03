@@ -3399,14 +3399,33 @@ LFS generate garbages
 
 # [Chap 44](http://pages.cs.wisc.edu/~remzi/OSTEP/file-integrity.pdf): Data Integrity and Protection
 
+## Disk Failure Modes
+**Latent-Sector Errors** (LSEs)
+* *error correcting codes* (ECC) are used by the drive to determine bad bits and tires fix it.
+* use extra redundancy to solve problems
 
+**Block Corruption**
+* use `CheckSum` to detect corruption
+ * e.g. CheckSum functions: `XOR`, addtion, Fletcher checksum, and most commonly: **Cyclic Redundancy Check** (CRC)
+ * [*CRC*](http://www.mathpages.com/home/kmath458.htm): 
 
+**Misdirected Writes** (in RAID for example)
+* add a alittle more information to each checksum: adding a *physical identifier* (physical ID)
 
+**Lost Writes**: old block remains
+* the old block likely has a matching checksum, and the physical ID used above (disk number and block offset) will also be correct.
+* Solutions: 
+ * to perform a write verify or read-after-write: slow
+ * sun's ZFS: keep another CheckSum for the inode
+  * Only if the writes to both the inode and the data are lost simultaneously will such a scheme
+fail, an unlikely (but unfortunately, possible!) situation.
 
+## Disk Scrubbing
+By periodically reading through every block of the
+system, and checking whether checksums are still valid, the disk system
+can reduce the chances that all copies of a certain data item become corrupted.
+Typical systems schedule scans on a nightly or weekly basis.
 
-
-
-
-
+# [Chap 45](http://pages.cs.wisc.edu/~remzi/OSTEP/file-dialogue.pdf): Summary Dialogue on Persistence
 
 
