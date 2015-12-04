@@ -3456,3 +3456,8 @@ received twice, preserving the ***exactly-once***semantics.
 
 **TCP/IP**: 
 
+*Big endian* stores
+bytes (say, of an integer) from most significant to least significant bits,
+much like Arabic numerals; little endian does the opposite.
+
+*remote procedure call* (RPC)
