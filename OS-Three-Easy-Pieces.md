@@ -3430,5 +3430,21 @@ Typical systems schedule scans on a nightly or weekly basis.
 
 # [Chap 46](http://pages.cs.wisc.edu/~remzi/OSTEP/dialogue-distribution.pdf): A Dialogue on Distribution
 
+# [Chap 47](http://pages.cs.wisc.edu/~remzi/OSTEP/dist-intro.pdf): Distributed Systems
+
+> HOW TO BUILD SYSTEMS THAT WORK WHEN COMPONENTS FAIL
+
+> COMMUNICATION IS INHERENTLY UNRELIABLE
+
+## Communication Basics
+***Packet loss*** is fundamental in networking.
+
+## Unreliable Communication Layers
+Just don't deal with packet loss; let user programs deal with it.
+
+## Reliable Communication Layers
+Use *acknowledgement*:
+
+![ack](https://cloud.githubusercontent.com/assets/14265605/11579342/e2b31fc2-99f2-11e5-8db6-9f2bb0457b37.png)
 
 
