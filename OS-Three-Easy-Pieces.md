@@ -3443,8 +3443,16 @@ Typical systems schedule scans on a nightly or weekly basis.
 Just don't deal with packet loss; let user programs deal with it.
 
 ## Reliable Communication Layers
-Use *acknowledgement*:
+Use *acknowledgement* and *timeout* and *exactly once*:
 
-![ack](https://cloud.githubusercontent.com/assets/14265605/11579342/e2b31fc2-99f2-11e5-8db6-9f2bb0457b37.png)
+![ack](https://cloud.githubusercontent.com/assets/14265605/11579371/23e06be4-99f3-11e5-9190-061390681b34.png)
+* When the receiver sees a duplicate transmission, it simply `ack`s the
+message, but (critically) does not pass the message to the application that
+receives the data. Thus, the sender receives the ack but themessage is not
+received twice, preserving the ***exactly-once***semantics.
+ * sender generates unique ID for each message: unbounded memory needed to track all msg's.
+ * a simpler approach: **sequence counter**: use a counter value (N) serves as an ID for the msg.
+  * if the receiver's counter value is higher, it means the msg has been received before. Thus it `ack`s the msg but does not pass it to the application.
 
+**TCP/IP**: 
 
