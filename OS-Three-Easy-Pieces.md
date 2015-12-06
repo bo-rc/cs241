@@ -3568,6 +3568,15 @@ was first accessed, and then would timeout after a certain amount of time
 (say 3 seconds). Thus, during those three seconds, all file accesses would
 determine that it was OK to use the cached file and thus do so with no
 network communication with the server.
+  * this caching implementation will also create new consisitency prolems: what happens in-between the time-out?
+
+The server side also buffers writes: one trick Network Appliance use is to first
+put writes in a battery-backed memory, thus enabling to quickly reply
+to WRITE requests without fear of losing the data and without the cost
+of having to write to disk right away.
+
+# [Chap 49](http://pages.cs.wisc.edu/~remzi/OSTEP/dist-afs.pdf): The Andrew File System (AFS)
+
 
 
 
