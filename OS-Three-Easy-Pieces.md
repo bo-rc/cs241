@@ -3461,3 +3461,41 @@ bytes (say, of an integer) from most significant to least significant bits,
 much like Arabic numerals; little endian does the opposite.
 
 *remote procedure call* (RPC)
+
+# [Chap 48](http://pages.cs.wisc.edu/~remzi/OSTEP/dist-nfs.pdf): Sun's Networkd File System (NFS)
+
+![distributed-file-system](https://cloud.githubusercontent.com/assets/14265605/11614733/acce1040-9c10-11e5-8901-b3e11db2847f.png)
+* easy sharing of data across clients
+* centralized administration
+ * e.g. easy file backup
+* security
+ * server is not accessible to many persons
+
+## A Basic Distributed File System
+*Client Side* and *Server Side*
+
+## NFS: Network File System
+Main goal of NFSv2: *simple and fast server crash recovery*
+
+### Key to fast crash recovery: Statelessness
+The server does not track anything about what clients are doing.
+* rather, the protocol is designed to deliver in each protocol request
+all the information that is needed in order to complete the request.
+* the client would make sure to keep enough information
+around in its memory to be able to tell the server what it needs to know during crash recovery.
+* No fancy crash recovery is needed; the server just
+starts running again, and a client, at worst, might have to retry a request.
+
+### The NFSv2 protocol
+
+
+
+
+
+
+
+
+
+
+
+
