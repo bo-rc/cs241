@@ -3548,6 +3548,17 @@ of most common operations.
 * some operations are hard: e.g. `mkdir` on the second try might have to overwrite an existing directory successfully created on the first try but failed `ack`ing to the client.
 * > accepting that life isn’t perfect and still building the systemis a sign of good engineering.
 
+## Improving Performance: Clent-side Caching
+caching and temporary buffer for writes.
+
+**cache consistency problem**:
+* First, to address *update visibility*, clients implement what is sometimes
+called *flush-on-close* (a.k.a., *close-to-open*) consistency semantics
+* Second, to address the *stale-cache* problem, NFSv2 clients first check
+to seewhether a file has changed before using its cached contents.
+ * when opening a file, the client-side file systemwill issue a `GETATTR`
+request to the server to fetch the file’s attributes to check if the file is the latest version.
+  * by checking the modification time stamp.
 
 
 
