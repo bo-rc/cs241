@@ -3560,5 +3560,16 @@ to seewhether a file has changed before using its cached contents.
 request to the server to fetch the file’s attributes to check if the file is the latest version.
   * by checking the modification time stamp.
 
+Bombarding the server with `GETATTR` requests problem:
+* make common case fast: often there is only one client working on a specific file: an **attribute cache** was added
+to each client.
+ * The attributes for a particular file were placed in the cache when the file
+was first accessed, and then would timeout after a certain amount of time
+(say 3 seconds). Thus, during those three seconds, all file accesses would
+determine that it was OK to use the cached file and thus do so with no
+network communication with the server.
+
+
+
 
 
