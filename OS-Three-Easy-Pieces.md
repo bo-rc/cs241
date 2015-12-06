@@ -3488,13 +3488,65 @@ starts running again, and a client, at worst, might have to retry a request.
 
 ### The NFSv2 protocol
 
+> How do we define the protocol to both be **stateless** and support the **POSIX** file system API?
 
+***File Handle***: to uniquely describe the
+file or directory a particular operation is going to operate upon.
+* thus, many of the protocol requests include a file handle.
 
+Three components of a *file handle*:
+* volume identifier: which file system the request refers to
+* inode number: which file within that partition the request is accessing
+* generation number: needed when reusing an inode number
 
+The NFS protocol:
+```
+NFSPROC_GETATTR // attributes are just themetadata that the file system tracks about each file
+ expects: file handle
+ returns: attributes
+NFSPROC_SETATTR
+ expects: file handle, attributes
+ returns: nothing
+NFSPROC_LOOKUP // to obtain a file handle
+ expects: directory file handle, name of file/directory to look up
+ returns: file handle
+NFSPROC_READ
+ expects: file handle, offset, count
+ returns: data, attributes
+NFSPROC_WRITE
+ expects: file handle, offset, count, data
+ returns: attributes
+NFSPROC_CREATE
+ expects: directory file handle, name of file, attributes
+ returns: nothing
+NFSPROC_REMOVE
+ expects: directory file handle, name of file to be removed
+ returns: nothing
+NFSPROC_MKDIR
+ expects: directory file handle, name of directory, attributes
+ returns: file handle
+NFSPROC_RMDIR
+ expects: directory file handle, name of directory to be removed
+ returns: nothing
+NFSPROC_READDIR
+ expects: directory handle, count of bytes to read, cookie
+ returns: directory entries, cookie (to get more entries)
+```
 
+## Handling Server Failure with **Idempotent** Operations
+During a failure, the client handle simply retries the request.
 
+The ability of the client to simply retry the request (regardless of what
+caused the failure) is due to an important property of most NFS requests:
+they are *idempotent*. 
+* An operation is called idempotent when the effect
+of performing the operation multiple times is equivalent to the effect of
+performing the operating a single time.
 
-
+The heart of the design of crash recovery in NFS is the idempotency
+of most common operations.
+* some operations are hard: e.g. `mkdir` on the second try might have to overwrite an existing directory successfully created on the first try but failed `ack`ing to the client.
+* > accepting that life isn’t perfect and still building the systemis a sign of good engineering.
 
 
 
