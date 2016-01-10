@@ -34,14 +34,46 @@ variables.
 * Register **r13** the *stack pointer* (also called **sp** or **SP**) is used to point to
 the top of the activation stack.
 
-### ARM assembly
 
 ### Status register
 ARM v6/v7 maintains a status register called the **CPSR** (*current program
 status register*) that holds four status bits, **negative (N)**, **zero (Z)**, **carry
 (C)**, and **overflow (O)**. These bits can be used for conditional execution
 of subsequent instructions.
+* The bits are set according to the most recently executed ALU instruction that
+includes the special “`s`” suffix. For example, the “`adds`” instruction will
+modify the status bits but the “`add`” instruction will not.
 
+Nearly all ARM instructions can include an optional *condition code*. 
+For example, the ldreq instruction will only execute if the Z-bit in the CPSR
+is set, which will be the case if the most recent computational instruction
+resulted in a result of zero:
+```
+subs r2,r2,#1
+streq r3, [r0] 
+```
+…will decrement register **r2** and store **r3** only if the new value of **r2**
+is zero.
+
+The compare (`cmp`) instruction can be used to set the status bits without any
+other side effect:
+```
+cmp r2,r3
+streq r4, [r0]
+```
+…will store register **r4** only if the contents of registers **r2** and **r3**
+are equal.
+
+When combining the condition code and the “`s`” suffix, the condition code
+comes first, for example: `addeqs r0,r0,r1`
+
+
+
+
+
+
+
+### ARM assembly
 
 
 
