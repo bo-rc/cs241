@@ -73,7 +73,12 @@ comes first, for example: `addeqs r0,r0,r1`
 
 
 
-### ARM assembly
+### Memory addressing mode
+
+![addressing_mode](https://cloud.githubusercontent.com/assets/14265605/12220081/7a3879e8-b724-11e5-9830-3960b06e205d.png)
+
+
+### GNU ARM assembler
 
 
 
