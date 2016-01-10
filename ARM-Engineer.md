@@ -17,7 +17,7 @@ instruction.
 * **r15**, the *program counter*, aka. **pc** or **PC**: is
 maintained by the hardware and used to control program flow.
 
-### APCS
+### ARM Procedure Call Standard
 When writing an assembly language routine—especially one that is embedded
 in or callable from C code, comform to the *ARM Procedure Call Standard* (**APCS**):
 * **r0** and **r1** are used for function return values.
@@ -33,4 +33,17 @@ activation frame contains local subroutine data such as the local
 variables.
 * Register **r13** the *stack pointer* (also called **sp** or **SP**) is used to point to
 the top of the activation stack.
+
+### ARM assembly
+
+### Status register
+ARM v6/v7 maintains a status register called the **CPSR** (*current program
+status register*) that holds four status bits, **negative (N)**, **zero (Z)**, **carry
+(C)**, and **overflow (O)**. These bits can be used for conditional execution
+of subsequent instructions.
+
+
+
+
+
 
