@@ -2993,6 +2993,7 @@ so forth.
 
 You can’t create one to a directory.
 * for fear that you will create a cycle in the directory tree.
+
 you can’t hard link to files in other disk partitions.
 * because inode numbers are only unique within a particular file system, not across file systems.
 
